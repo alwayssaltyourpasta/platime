@@ -1,0 +1,43 @@
+<AddScreen>:
+    name: 'add_screen'
+    Platime
+    MDIconButton:
+        pos_hint: {"x": 0.05, "y": 0.914}
+        icon: 'arrow-left'
+        size:(50,50)
+        on_release:
+            root.manager.current = 'today_screen'
+    InfoLabel:
+        text:'A D D  T A S K'
+
+    ChooseTask:
+        on_release:
+            root.manager.current = 'choose_task_screen'
+    ChooseDate:
+        on_release:
+            root.show_datepicker()
+    AddButton:
+        icon: 'check'
+        pos_hint: {"center_x": 0.37, "y": 0.2}
+        on_release:
+            root.manager.current = 'today_screen'
+
+    AddButton:
+        icon: 'delete-forever'
+        pos_hint: {"center_x": 0.6, "y": 0.2}
+        on_release:
+            root.manager.current = 'today_screen'
+    BoxLayout:
+        orientation: 'horizontal'
+        NavigatorButton:
+            icon: 'clock-fast'
+            on_release:
+                root.manager.current = 'today_screen'
+        NavigatorButton:
+            icon: 'format-list-checks'
+            on_release:
+                root.manager.current = 'task_screen'
+        NavigatorButton:
+            icon: 'poll'
+            on_release:
+                root.manager.current = 'statistics_screen'

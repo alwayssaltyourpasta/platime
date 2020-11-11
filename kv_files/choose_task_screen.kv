@@ -1,0 +1,45 @@
+<ChooseTaskScreen>:
+    on_pre_enter:
+        choose_list.clear_widgets()
+        root.choose_task()
+
+    name: 'choose_task_screen'
+    Platime
+    InfoLabel:
+        text:'C H O O S E  T A S K'
+    MDIconButton:
+        pos_hint: {"x": 0.05, "y": 0.914}
+        icon: 'arrow-left'
+        size:(50,50)
+        on_release:
+            root.manager.current = 'add_screen'
+
+    ScrollView:
+        pos_hint: {"x": 0, "y": 0.25}
+        size_hint_y: None
+        height: 360
+        MDGridLayout:
+            cols:1
+            id: choose_list
+            adaptive_height: True
+    AddButton:
+        icon: 'check'
+        pos_hint: {"center_x": 0.5, "y": 0.15}
+        on_release:
+            #root.add_task()
+            #root.clear_inputs([task_name, task_time])
+            root.manager.current = 'add_screen'
+    BoxLayout:
+        orientation: 'horizontal'
+        NavigatorButton:
+            icon: 'clock-fast'
+            on_release:
+                root.manager.current = 'today_screen'
+        NavigatorButton:
+            icon: 'format-list-checks'
+            on_release:
+                root.manager.current = 'task_screen'
+        NavigatorButton:
+            icon: 'poll'
+            on_release:
+                root.manager.current = 'statistics_screen'

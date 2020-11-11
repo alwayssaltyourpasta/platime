@@ -1,0 +1,26 @@
+<StatisticsScreen>:
+    name: 'statistics_screen'
+    Platime
+    InfoLabel:
+        text: "S T A T I S T I C S"
+    BoxLayout:
+        orientation: 'horizontal'
+        MDIconButton:
+            icon: 'clock-fast'
+            pos_hint: {"x": 0, "y": 0}
+            size: (135,70)
+            on_release:
+                root.manager.current = 'today_screen'
+
+        MDIconButton:
+            icon: 'format-list-checks'
+            #pos_hint: {"x": 0.6, "y": 0}
+            size: (135,70)
+            on_release:
+                root.manager.current = 'task_screen'
+        MDIconButton:
+            icon: 'poll'
+            #pos_hint: {"x": 0.6, "y": 0}
+            size: (135,70)
+            on_release:
+                root.manager.current = 'statistics_screen'

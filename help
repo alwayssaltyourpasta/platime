@@ -1,0 +1,74 @@
+hex('#B5CBA0') - jasny szary (data) -> #8FBC8F
+#3CB371 - ciemny morski
+#191919
+MDFloatingActionButton
+FloatingAction
+Stworzyć create screen - czyli screen z dodawaniem zadań/wyborem z listy do grafiku pracy
+
+Stworzyć coś takiego jak minutnik? czy jest coś takiego?
+jak nie to po prostu wpisać liczbę minut
+
+ChooseTask -> pojawia się scroolview z listą typowych zadań pobranych z bazy danych
+
+            OneLineListItem:
+                text: 'Nazwa zadania'
+            TwoLineListItem:
+                text: 'Nazwa zadania - lepszy wybór do listy'
+                secondary_text: 'Standardowy czas na wykonanie'
+
+
+
+
+    Screen:
+
+        BoxLayout:
+            orientation: 'vertical'
+
+            MDBottomNavigation:
+                panel_color: 1,1,1,1
+
+                MDBottomNavigationItem:
+                    name: 'today_b'
+                    text: "Today"
+                    icon: 'plus'
+
+                    TodayScreen
+
+                MDBottomNavigationItem:
+                    name: 'task_b'
+                    text: "Tasks"
+                    icon: 'plus'
+
+                    TaskScreen
+                MDBottomNavigationItem:
+                    name: 'statistics_b'
+                    text: "Statistics"
+                    icon: 'plus'
+
+                    StatisticsScreen
+
+mycursos = mydb.cursor()
+
+        mycursos.execute("SELECT type_name, time_scheduled FROM task_type")
+        rows = mycursos.fetchall()
+
+        task_name=[]
+        task_time=[]
+
+        for i in range(len(rows)):
+            task_name.append(rows[i][0])
+            task_time.append(rows[i][1])
+            print(task_name[i])
+
+        #print(rows)
+        #print(task_name)
+
+        for i in range(len(task_name)):
+            self.read_design.get_screen('today_screen').ids.today_list.add_widget(
+                TwoLineListItem(text=f'Task: {str(task_name[i])}' ,
+                                secondary_text=f'Time: {str(task_time[i])} minutes',
+                                theme_text_color='Custom',
+                                text_color=get_color_from_hex('#e5e5e5'),
+                                font_style= 'Body1',
+                                on_release=partial(click, task_name[i]))
+            )

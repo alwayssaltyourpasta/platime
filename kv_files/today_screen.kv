@@ -1,0 +1,44 @@
+<TodayScreen>:
+    on_pre_enter:
+        today_list.clear_widgets()
+        root.today_tasks()
+
+    name: 'today_screen'
+    Platime
+    Date
+    InfoLabel:
+        text: "T O D A Y'S  T A S K S"
+
+    AddButton:
+        icon: 'plus'
+        pos_hint: {"x": 0.8, "y": 0.82}
+        on_release:
+            root.manager.current = 'add_screen'
+    AddButton:
+        pos_hint: {"x": 0.07, "y": 0.82}
+        icon: 'calendar-month'
+        on_release:
+            root.manager.current = 'work_plan_screen'
+    ScrollView:
+        pos_hint: {"x": 0, "y": 0.15}
+        size_hint_y: None
+        height: 400
+        MDGridLayout:
+            cols: 1
+            id: today_list
+            adaptive_height: True
+
+    BoxLayout:
+        orientation: 'horizontal'
+        NavigatorButton:
+            icon: 'clock-fast'
+            on_release:
+                root.manager.current = 'today_screen'
+        NavigatorButton:
+            icon: 'format-list-checks'
+            on_release:
+                root.manager.current = 'task_screen'
+        NavigatorButton:
+            icon: 'poll'
+            on_release:
+                root.manager.current = 'statistics_screen'

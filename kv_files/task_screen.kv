@@ -1,0 +1,42 @@
+<TaskScreen>:
+    on_pre_enter:
+        task_list.clear_widgets()
+        root.all_tasks()
+    name: 'task_screen'
+    Platime
+    InfoLabel:
+        text: "T A S K S"
+    AddButton:
+        icon: 'plus'
+        pos_hint: {"x": 0.8, "y": 0.82}
+        on_release:
+            root.manager.current = 'create_task_screen'
+    ScrollView:
+        pos_hint: {"x": 0, "y": 0.15}
+        size_hint_y: None
+        height: 400
+        MDGridLayout:
+            cols:1
+            id: task_list
+            adaptive_height: True
+    BoxLayout:
+        orientation: 'horizontal'
+        MDIconButton:
+            icon: 'clock-fast'
+            pos_hint: {"x": 0, "y": 0}
+            size: (135,70)
+            on_release:
+                root.manager.current = 'today_screen'
+
+        MDIconButton:
+            icon: 'format-list-checks'
+            #pos_hint: {"x": 0.6, "y": 0}
+            size: (135,70)
+            on_release:
+                root.manager.current = 'task_screen'
+        MDIconButton:
+            icon: 'poll'
+            #pos_hint: {"x": 0.6, "y": 0}
+            size: (135,70)
+            on_release:
+                root.manager.current = 'statistics_screen'
