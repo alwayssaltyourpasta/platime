@@ -1,7 +1,22 @@
+<ListW>:
+    IconLeftWidget:
+
+        icon: 'check'
+        on_release:
+            root.edit()
+    ContainerW:
+        id:container_plan
+
+        MDIconButton:
+            icon: 'delete-empty-outline'
+            size_hint: (0.15, None)
+            on_release:
+                root.delete()
 <WorkPlanScreen>:
     on_pre_enter:
         root.show_datepicker()
         work_plan.clear_widgets()
+        ciekawe.clear_widgets()
         #root.work_plan()
 
     name: 'work_plan_screen'
@@ -17,10 +32,16 @@
 
     InfoLabel:
         text:'W O R K  P L A N'
+
+    BoxLayout
+        id: ciekawe
+        orientation: 'vertical'
+        pos_hint: {"center_x": 0.5, "center_y": 0.82}
+
     ScrollView:
-        pos_hint: {"x": 0, "y": 0.25}
+        pos_hint: {"x": 0, "y": 0.15}
         size_hint_y: None
-        height: 360
+        height: 400
         MDGridLayout:
             cols:1
             id: work_plan

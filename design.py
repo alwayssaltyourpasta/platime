@@ -18,6 +18,7 @@ builder_string = """
         icon: root.icon
 
     RightCheckbox:
+        on_active: root.on_checkbox_active(*args)
 
 #Buttons
 <AddButton@MDFloatingActionButton>:
@@ -28,7 +29,7 @@ builder_string = """
     
 <NavigatorButton@MDIconButton>:
     pos_hint: {"x": 0, "y": 0}
-    size: (135,70)  
+    size_hint: (0.3, None)  
           
 #potwierdz, cofnij
 <ClassicButton@MDFlatButton>:
@@ -67,10 +68,10 @@ builder_string = """
     font_style: 'Overline' 
     font_size: 20  
     
-<Date@MDLabel>:  
+<Date@MDLabel>:
     text: str(datetime.date.today())
+    pos_hint: {"center_x":0.5, "center_y": 0.92}  
     halign: 'center'
-    pos_hint: {"center_x":0.5, "center_y": 0.92}
     theme_text_color: 'Custom'
     text_color: hex('#e5e5e5')
     font_style: 'Caption' 
@@ -88,34 +89,39 @@ builder_string = """
     size_hint: (0.8, 0.1)
 
 #ScreenManager 
-ScreenManager:
-    transition: NoTransition()
-    TodayScreen:
-    TaskScreen:
-    StatisticsScreen:
-    AddScreen:
-    ChooseTaskScreen:
-    CreateTaskScreen:
-    WorkPlanScreen:
+Screen:
+    ScreenManager:
+        transition: NoTransition()
+        TodayScreen:
+        TaskScreen:
+        StatisticsScreen:
+        AddScreen:
+        ChooseTaskScreen:
+        CreateTaskScreen:
+        WorkPlanScreen:
     
 <MyContent>:
     #height tego contentu co sie wysuwa
     adaptive_height: True
-
+    MDIconButton:
+        icon: 'check'
+        size_hint: (0.25, None)
+        on_release:
+            root.funkcja()
+        
     MDIconButton:
         icon: 'play-outline'
-        size_hint: (None, None)
-        pos_hint: {"center_x":0.5, "center_y": 0.5}
-        
+        size_hint: (0.25, None)
+                
     MDIconButton:
         icon: 'pause-circle-outline'
-        size_hint: (None, None)
+        size_hint: (0.25, None)
         
-    OneLineIconListItem:
-        text: "You really wanna delete this?"
+    MDIconButton:
+        icon: 'delete-empty-outline'
+        size_hint: (0.25, None)    
+         
 
-        IconLeftWidget:
-            icon: 'delete-empty-outline' 
 
 <Content>
     size_hint_y: None

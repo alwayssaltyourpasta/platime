@@ -1,3 +1,18 @@
+<ListT>:
+    IconLeftWidget:
+
+        icon: 'file-document-edit-outline'
+        on_release:
+            root.edit()
+    ContainerT:
+        id:container_task
+
+        MDIconButton:
+            icon: 'delete-empty-outline'
+            size_hint: (0.15, None)
+            on_release:
+                root.delete()
+
 <TaskScreen>:
     on_pre_enter:
         task_list.clear_widgets()
@@ -21,22 +36,15 @@
             adaptive_height: True
     BoxLayout:
         orientation: 'horizontal'
-        MDIconButton:
+        NavigatorButton:
             icon: 'clock-fast'
-            pos_hint: {"x": 0, "y": 0}
-            size: (135,70)
             on_release:
                 root.manager.current = 'today_screen'
-
-        MDIconButton:
+        NavigatorButton:
             icon: 'format-list-checks'
-            #pos_hint: {"x": 0.6, "y": 0}
-            size: (135,70)
             on_release:
                 root.manager.current = 'task_screen'
-        MDIconButton:
+        NavigatorButton:
             icon: 'poll'
-            #pos_hint: {"x": 0.6, "y": 0}
-            size: (135,70)
             on_release:
                 root.manager.current = 'statistics_screen'

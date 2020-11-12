@@ -1,7 +1,25 @@
+<List>:
+    IconLeftWidget:
+        icon: 'check'
+        on_release:
+            root.done()
+    Container:
+        id:container
+
+        MDIconButton:
+            icon: 'play-outline'
+            size_hint: (0.15, None)
+            on_release:
+                root.time()
+        MDIconButton:
+            icon: 'delete-empty-outline'
+            size_hint: (0.15, None)
+            on_release:
+                root.delete()
 <TodayScreen>:
     on_pre_enter:
         today_list.clear_widgets()
-        root.today_tasks()
+        root.today()
 
     name: 'today_screen'
     Platime

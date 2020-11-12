@@ -14,10 +14,13 @@ class AddScreen(Screen):
         # function which have to choose date add to tak in datebase
 
     def got_date(self, the_date):
+        task_date = the_date
         print(the_date.year)
         print(the_date.month)
         print(the_date.day)
         print(the_date)
+        type_tt = 6
+        main.save_to_db(type_tt, task_date)
 
 sm = ScreenManager()
 sm.add_widget(AddScreen(name="add_screen"))

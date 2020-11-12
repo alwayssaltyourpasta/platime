@@ -40,24 +40,40 @@ except sqlite3.Error as error:
 
 class ListItemWithCheckbox(OneLineAvatarIconListItem):
     '''Custom list item.'''
-
+    def on_checkbox_active(self, checkbox, value):
+        if value:
+            print('The checkbox', checkbox, 'is active', 'and', checkbox.state, 'state')
+        else:
+            print('The checkbox', checkbox, 'is inactive', 'and', checkbox.state, 'state')
     icon = StringProperty("android")
 class RightCheckbox(IRightBodyTouch, MDCheckbox):
-    '''Custom right container.'''
+    pass
 class Content(MDBoxLayout):
     def show_datepicker(self):
         picker = MDDatePicker(callback=self.got_date)
         picker.open()
 
         # function which have to choose date add to tak in datebase
-
     def got_date(self, the_date):
-        print(the_date.year)
-        print(the_date.month)
-        print(the_date.day)
+        #print(the_date.year)
+        #print(the_date.month)
+        #print(the_date.day)
+        type_t = 1
         print(the_date)
+        save_to_db(type_t, the_date)
+
 class MyContent(MDBoxLayout):
-    pass
+    def funkcja(self):
+        print('hej')
+
+def save_to_db(this_type, this_date):
+    mycursor = sqliteConnection.cursor()
+    mycursor.execute('SELECT * FROM work_plan')
+    rows = mycursor.fetchall()
+    mycursor.execute(f"INSERT INTO work_plan (id_type, scheduled_date) "
+                     f"VALUES (?, ?)", (this_type, this_date))
+
+    sqliteConnection.commit()
 def work_plan(list):
     mycursor = sqliteConnection.cursor()
 
@@ -77,44 +93,18 @@ def work_plan(list):
         list.add_widget(
             ListItemWithCheckbox(text=f'{str(task_name[i])}',
                                  icon='circle-small',
-
                                  # secondary_text=f'Time: {str(task_time[i])} minutes',
                                  theme_text_color='Custom',
                                  text_color=get_color_from_hex('#e5e5e5'),
                                  font_style='Body1',
                                  # ten press umożliwi sprawdzenie ile czasu średnio potrzebne na zadanie wysunie się okno pod spodem
                                  on_press=lambda x: print(x.text))
-            # on_press=partial(click, task_name[i]))
+
         )
 #funkcja na użytek kliknięcia elementu z listy
 def click(name, zmienna_nadmiarowa):
     new = name
     print(new)
-def today(list):
-    mycursor = sqliteConnection.cursor()
-
-    mycursor.execute("SELECT task_name, scheduled_time FROM task_type")
-    rows = mycursor.fetchall()
-
-    task_name = []
-    task_time = []
-
-    for i in range(len(rows)):
-        task_name.append(rows[i][0])
-        task_time.append(rows[i][1])
-
-    for i in range(len(task_name)):
-        list.add_widget(
-            MDExpansionPanel(
-                icon='graphics/plik.png',
-                content=MyContent(),
-                panel_cls=MDExpansionPanelTwoLine(
-                    text=f'Task: {str(task_name[i])}',
-                    secondary_text=f'Time: {str(task_time[i])} minutes',
-                    theme_text_color='Custom',
-                    text_color=get_color_from_hex('#e5e5e5'),
-                    font_style='Subtitle1')
-            ))
 def show_tasks(task_list):
     mycursos = sqliteConnection.cursor()
 
@@ -151,11 +141,13 @@ class PlatimeApp(MDApp):
         self.theme_cls.primary_palette = "Green"
         self.theme_cls.primary_hue = "300"
         self.theme_cls.theme_style = "Dark"
+        self.icon = 'plik.png'
         screen = Screen()
         self.read_design = Builder.load_string(builder_string)
         screen.add_widget(self.read_design)
         return screen
-
+    def on_start(self):
+        print('Start')
 
 if __name__ == '__main__':
     PlatimeApp().run()
