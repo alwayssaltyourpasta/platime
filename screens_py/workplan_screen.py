@@ -47,21 +47,13 @@ def work_plan_f(self, date_new):
     task_name = []
     task_time = []
 
+
     for i in range(len(rows)):
 
         task_name.append(rows[i][0])
         task_time.append(rows[i][1])
 
-    self.ids.ciekawe.add_widget(
-        MDLabel(
-            text=string_date,
-            halign='center',
-            theme_text_color= 'Custom',
-            text_color= get_color_from_hex('#3CB371'),
-            font_style= 'Caption',
-            font_size= 8
-    )
-    )
+
 
     for i in range(len(task_name)):
         self.ids.work_plan.add_widget(
@@ -72,5 +64,35 @@ def work_plan_f(self, date_new):
                 text_color=get_color_from_hex('#e5e5e5'),
                 font_style='Subtitle1')
         )
+
+    self.ids.date_label.add_widget(
+        MDLabel(
+            text=string_date,
+            halign='center',
+            theme_text_color='Custom',
+            text_color=get_color_from_hex('#3CB371'),
+            font_style='Caption',
+            font_size=8
+        )
+    )
+    mycursor.execute(f"SELECT sum(a.scheduled_time) "
+                     "FROM task_type a "
+                     "JOIN work_plan b "
+                     "ON a.id_type=b.id_type "
+                     "WHERE b.scheduled_date = ? ", (string_date,))
+    row = mycursor.fetchone()
+    all_time = int(row[0])
+    print(all_time)
+
+    self.ids.time_label.add_widget(
+        MDLabel(
+            text=f"W O R K  T I M E: {str(all_time)} minutes",
+            halign='center',
+            theme_text_color= 'Custom',
+            text_color= get_color_from_hex('#3CB371'),
+            font_style= 'Caption',
+            font_size= 8
+    )
+    )
 sm = ScreenManager()
 sm.add_widget(WorkPlanScreen(name="work_plan_screen"))

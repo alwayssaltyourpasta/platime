@@ -16,7 +16,8 @@
     on_pre_enter:
         root.show_datepicker()
         work_plan.clear_widgets()
-        ciekawe.clear_widgets()
+        date_label.clear_widgets()
+        time_label.clear_widgets()
         #root.work_plan()
 
     name: 'work_plan_screen'
@@ -34,10 +35,13 @@
         text:'W O R K  P L A N'
 
     BoxLayout
-        id: ciekawe
+        id: date_label
         orientation: 'vertical'
         pos_hint: {"center_x": 0.5, "center_y": 0.82}
-
+    BoxLayout
+        id: time_label
+        orientation: 'vertical'
+        pos_hint: {"center_x": 0.5, "center_y": 0.78}
     ScrollView:
         pos_hint: {"x": 0, "y": 0.15}
         size_hint_y: None
