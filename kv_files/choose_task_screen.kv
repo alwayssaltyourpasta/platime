@@ -15,20 +15,14 @@
             root.manager.current = 'add_screen'
 
     ScrollView:
-        pos_hint: {"x": 0, "y": 0.25}
+        pos_hint: {"x": 0, "y": 0.15}
         size_hint_y: None
-        height: 360
+        height: 450
         MDGridLayout:
             cols:1
             id: choose_list
             adaptive_height: True
-    AddButton:
-        icon: 'check'
-        pos_hint: {"center_x": 0.5, "y": 0.15}
-        on_release:
-            #root.add_task()
-            #root.clear_inputs([task_name, task_time])
-            root.manager.current = 'add_screen'
+
     BoxLayout:
         orientation: 'horizontal'
         NavigatorButton:
