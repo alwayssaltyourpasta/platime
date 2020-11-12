@@ -2,6 +2,9 @@ import main
 from kivy.uix.screenmanager import Screen, ScreenManager
 from kivymd.uix.list import TwoLineListItem, TwoLineAvatarIconListItem
 
+
+class TaskList(TwoLineAvatarIconListItem):
+    pass
 class ChooseTaskScreen(Screen):
 
     def choose_task(self):
@@ -19,7 +22,7 @@ class ChooseTaskScreen(Screen):
 
         for i in range(len(task_name)):
             self.ids.choose_list.add_widget(
-                TwoLineListItem(
+                TaskList(
                     text=f'{str(task_name[i])}',
                     secondary_text=f'{str(task_time[i])} minutes',
                     theme_text_color='Custom',
