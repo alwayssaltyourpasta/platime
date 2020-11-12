@@ -19,7 +19,7 @@ class AddScreen(Screen):
         print(the_date.month)
         print(the_date.day)
         print(the_date)
-        type_tt = 6
+        type_tt = 7
         main.save_to_db(type_tt, task_date)
 
 sm = ScreenManager()

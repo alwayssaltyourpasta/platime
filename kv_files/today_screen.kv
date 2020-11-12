@@ -19,6 +19,7 @@
 <TodayScreen>:
     on_pre_enter:
         today_list.clear_widgets()
+        time.clear_widgets()
         root.today()
 
     name: 'today_screen'
@@ -26,7 +27,8 @@
     Date
     InfoLabel:
         text: "T O D A Y'S  T A S K S"
-
+    BoxLayout:
+        id: time
     AddButton:
         icon: 'plus'
         pos_hint: {"x": 0.8, "y": 0.82}

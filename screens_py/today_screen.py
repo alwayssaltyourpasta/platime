@@ -7,6 +7,7 @@ from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelTwoLine
 from kivymd.uix.list import TwoLineAvatarIconListItem
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.list import IRightBodyTouch
+from kivymd.uix.label import MDLabel
 
 today_element = ''
 
@@ -42,6 +43,27 @@ class TodayScreen(Screen):
                         font_style='Subtitle1',
                         on_press = lambda x: get_elemenf_of_list(x.text))
                 )
+
+        mycursor.execute(f"SELECT sum(a.scheduled_time) "
+                         f"FROM task_type a "
+                         f"JOIN work_plan b "
+                         f"ON a.id_type=b.id_type "
+                         f"WHERE b.scheduled_date = date('now')")
+        row = mycursor.fetchone()
+        time_on_this_date = row[0]
+        print(time_on_this_date)
+
+        self.ids.time.add_widget(
+            MDLabel(
+                text = f"W O R K  T I M E: {str(time_on_this_date)} minutes",
+                halign= 'center',
+                pos_hint= {"center_x": 0.5, "center_y": 0.8},
+                theme_text_color= 'Custom',
+                text_color= get_color_from_hex('#3CB371'),
+                font_style= 'Caption',
+                font_size= 10
+            )
+        )
 
 def get_elemenf_of_list(the_element):
     today_element = the_element
