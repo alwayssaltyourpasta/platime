@@ -22,7 +22,6 @@ import screens_py.task_screen
 import screens_py.statistics_screen
 import screens_py.add_screen
 import screens_py.create_task_screen
-import screens_py.choose_task_screen
 import screens_py.workplan_screen
 
 
@@ -68,8 +67,11 @@ class MyContent(MDBoxLayout):
 
 def save_to_db(this_type, this_date):
     mycursor = sqliteConnection.cursor()
-    mycursor.execute('SELECT * FROM work_plan')
-    rows = mycursor.fetchall()
+    mycursor.execute('SELECT a.id_type '
+                     'FROM work_plan a '
+                     'JOIN task_type b '
+                     'ON a.id_type = b.id_type '
+                     'WHERE b.task_name = ? ')
     mycursor.execute(f"INSERT INTO work_plan (id_type, scheduled_date) "
                      f"VALUES (?, ?)", (this_type, this_date))
 

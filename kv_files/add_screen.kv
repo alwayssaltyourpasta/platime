@@ -1,32 +1,30 @@
-<AddScreen>:
-    name: 'add_screen'
+<TaskList>:
+    IconLeftWidget:
+        icon: 'arrow-right'
+<AddTaskScreen>:
+    on_pre_enter:
+        choose_list.clear_widgets()
+        root.choose_task()
+    name: 'add_task_screen'
     Platime
+    InfoLabel:
+        text:'C H O O S E  T A S K'
     MDIconButton:
         pos_hint: {"x": 0.05, "y": 0.914}
         icon: 'arrow-left'
         size:(50,50)
         on_release:
-            root.manager.current = 'today_screen'
-    InfoLabel:
-        text:'A D D  T A S K'
+            root.manager.current = 'add_screen'
 
-    ChooseTask:
-        on_release:
-            root.manager.current = 'choose_task_screen'
-    ChooseDate:
-        on_release:
-            root.show_datepicker()
-    AddButton:
-        icon: 'check'
-        pos_hint: {"center_x": 0.37, "y": 0.2}
-        on_release:
-            root.manager.current = 'today_screen'
+    ScrollView:
+        pos_hint: {"x": 0, "y": 0.15}
+        size_hint_y: None
+        height: 450
+        MDGridLayout:
+            cols:1
+            id: choose_list
+            adaptive_height: True
 
-    AddButton:
-        icon: 'delete-forever'
-        pos_hint: {"center_x": 0.6, "y": 0.2}
-        on_release:
-            root.manager.current = 'today_screen'
     BoxLayout:
         orientation: 'horizontal'
         NavigatorButton:
@@ -41,3 +39,4 @@
             icon: 'poll'
             on_release:
                 root.manager.current = 'statistics_screen'
+

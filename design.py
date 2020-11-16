@@ -6,7 +6,6 @@ builder_string = """
 #: include kv_files/today_screen.kv
 #: include kv_files/task_screen.kv
 #: include kv_files/statistics_screen.kv
-#: include kv_files/choose_task_screen.kv
 #: include kv_files/create_task_screen.kv
 #: include kv_files/add_screen.kv
 #: include kv_files/workplan_screen.kv
@@ -95,8 +94,7 @@ Screen:
         TodayScreen:
         TaskScreen:
         StatisticsScreen:
-        AddScreen:
-        ChooseTaskScreen:
+        AddTaskScreen:
         CreateTaskScreen:
         WorkPlanScreen:
     
