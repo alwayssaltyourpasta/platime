@@ -81,18 +81,30 @@ def work_plan_f(self, date_new):
                      "ON a.id_type=b.id_type "
                      "WHERE b.scheduled_date = ? ", (string_date,))
     row = mycursor.fetchone()
-    all_time = int(row[0])
-    print(all_time)
+    try:
+        all_time = int(row[0])
+        print(all_time)
 
-    self.ids.time_label.add_widget(
-        MDLabel(
-            text=f"W O R K  T I M E: {str(all_time)} minutes",
-            halign='center',
-            theme_text_color= 'Custom',
-            text_color= get_color_from_hex('#3CB371'),
-            font_style= 'Caption',
-            font_size= 8
-    )
-    )
+        self.ids.time_label.add_widget(
+            MDLabel(
+                text=f"W O R K  T I M E: {str(all_time)} minutes",
+                halign='center',
+                theme_text_color= 'Custom',
+                text_color= get_color_from_hex('#3CB371'),
+                font_style= 'Caption',
+                font_size= 8
+        )
+        )
+    except:
+        self.ids.time_label.add_widget(
+            MDLabel(
+                text="F R E E  T I M E!",
+                halign='center',
+                theme_text_color='Custom',
+                text_color=get_color_from_hex('#3CB371'),
+                font_style='Caption',
+                font_size=8
+            )
+        )
 sm = ScreenManager()
 sm.add_widget(WorkPlanScreen(name="work_plan_screen"))
