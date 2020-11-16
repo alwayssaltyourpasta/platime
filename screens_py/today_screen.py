@@ -8,6 +8,8 @@ from kivymd.uix.list import TwoLineAvatarIconListItem
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.list import IRightBodyTouch
 from kivymd.uix.label import MDLabel
+from functools import partial
+
 
 today_element = ''
 
@@ -41,7 +43,7 @@ class TodayScreen(Screen):
                         theme_text_color='Custom',
                         text_color=get_color_from_hex('#e5e5e5'),
                         font_style='Subtitle1',
-                        on_press = lambda x: get_elemenf_of_list(x.text))
+                        on_press = partial(get_element_of_list, task_id[i],))
                 )
 
         mycursor.execute(f"SELECT sum(a.scheduled_time) "
@@ -77,7 +79,7 @@ class TodayScreen(Screen):
                     font_size=20
                 )
             )
-def get_elemenf_of_list(the_element):
+def get_element_of_list(the_element, zmienna_nadmiarowa):
     today_element = the_element
     print(today_element)
 
