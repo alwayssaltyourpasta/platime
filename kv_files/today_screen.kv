@@ -1,4 +1,5 @@
 <ItemContent>:
+
     size_hint_y: None
     adaptive_height: True
     #height: self.minimum_height
@@ -23,12 +24,12 @@
         #size_hint: (0.15, .5)
         on_press:
             root.stop()
-            root.number = 0
+            root.minutes = 0
             root.end()
 
 
     MDLabel:
-        text: f"{str(root.number)} minutes"
+        text: str(root.minutes)  + " minutes"
         text_size: self.size
         halign: 'center'
         valign: 'middle'
@@ -36,6 +37,7 @@
         text_color: hex('#3CB371')
         font_style: 'Caption'
         font_size: 10
+
 
     MDIconButton:
         icon: 'check'
@@ -45,26 +47,10 @@
         icon: 'delete-empty-outline'
         #size_hint: (0.15, None)
 
-<List>:
-    IconLeftWidget:
-        icon: 'check'
-        on_release:
-            root.done()
-    Container:
-        id:container
 
-        MDIconButton:
-            icon: 'play-outline'
-            size_hint: (0.15, None)
-            on_release:
-                root.time()
-        MDIconButton:
-            icon: 'delete-empty-outline'
-            size_hint: (0.15, None)
-            on_release:
-                root.delete()
 <TodayScreen>:
     on_pre_enter:
+
         today_list.clear_widgets()
         time.clear_widgets()
         root.today()

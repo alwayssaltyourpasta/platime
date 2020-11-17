@@ -17,14 +17,17 @@ from kivy.properties import NumericProperty
 today_element = ''
 
 class ItemContent(MDBoxLayout):
-    number = NumericProperty()
+    seconds = NumericProperty()
+    minutes = NumericProperty()
 
     def increment_time(self, interval):
-        self.number += 1
+        self.minutes += 1
 
     def start(self):
         Clock.unschedule(self.increment_time)
-        Clock.schedule_interval(self.increment_time, 60)
+        Clock.schedule_interval(self.increment_time, 1)
+
+
 
 
     def stop(self):
@@ -105,52 +108,13 @@ class TodayScreen(Screen):
             )
 
         def on_panel_open(self, instance_panel):
-            print(task_id[i])
+            print(instance_panel)
 
 def get_id(task, nadmiarowa):
     id_task = task
     print(id_task)
 
-def show_MDDialog(the_element, zmienna_n):
-    today_element = the_element
-    my_dialog = MDDialog(
-        title="MDDialog - tytuł",
-        text = "Are you sure this?!",
-        buttons=[
-            MDIconButton(
-                icon = 'check'
-            ),
-            MDIconButton(
-                icon = 'play-outline'
-            ),
-            MDIconButton(
-                icon='pause-octagon-outline'
-            ),
-            MDIconButton(
-                icon='stop-circle-outline'
-            ),
-            MDIconButton(
-                icon='delete-empty-outline'
-            )
-        ],
-        size_hint=[1, .5],
-        auto_dismiss = False
-        )
-    my_dialog.open()
-    print(today_element)
 
-
-class List(TwoLineAvatarIconListItem):
-    def time(self):
-        print('Ehhhhh')
-    def delete(self):
-        print('I cyk ni ma')
-    def done(self):
-        print('I cyk zmiana')
-
-
-class Container(IRightBodyTouch, MDBoxLayout):
-    adaptive_width = True
 
 
 sm = ScreenManager()
