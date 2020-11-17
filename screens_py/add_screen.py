@@ -52,7 +52,7 @@ class AddTaskScreen(Screen):
                          'WHERE task_name = ? ', (task_name,))
 
         row = mycursor.fetchone()
-
+        print(row)
         this_type = int(row[0])
         print(this_type)
 

@@ -8,6 +8,8 @@ class CreateTaskScreen(Screen):
         time = self.ids.task_time.text
 
         mycursor = main.sqliteConnection.cursor()
+        mycursor.execute("SELECT id_type FROM task_type ")
+        rows = mycursor.fetchall()
 
         if name=="":
             print("Tu trzeba zrobić popup dla braku nazwy")
@@ -16,8 +18,8 @@ class CreateTaskScreen(Screen):
         else:
 
             mycursor.execute(
-                f" INSERT INTO task_type ( task_name, scheduled_time) \
-                                                VALUES ('{self.ids.task_name.text}', '{self.ids.task_time.text}')")
+                f" INSERT INTO task_type ( id_type, task_name, scheduled_time) \
+                                                VALUES ({len(rows)+1},'{self.ids.task_name.text}', '{self.ids.task_time.text}')")
             print("Done - number is bigger than 1")
             main.sqliteConnection.commit()
 
