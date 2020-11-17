@@ -14,7 +14,6 @@ from kivymd.uix.dialog import MDDialog
 from kivymd.uix.button import MDFlatButton, MDIconButton
 from kivy.properties import NumericProperty
 
-today_element = ''
 
 class ItemContent(MDBoxLayout):
     seconds = NumericProperty()
@@ -26,9 +25,6 @@ class ItemContent(MDBoxLayout):
     def start(self):
         Clock.unschedule(self.increment_time)
         Clock.schedule_interval(self.increment_time, 1)
-
-
-
 
     def stop(self):
         Clock.unschedule(self.increment_time)
@@ -109,12 +105,6 @@ class TodayScreen(Screen):
 
         def on_panel_open(self, instance_panel):
             print(instance_panel)
-
-def get_id(task, nadmiarowa):
-    id_task = task
-    print(id_task)
-
-
 
 
 sm = ScreenManager()

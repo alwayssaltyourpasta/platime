@@ -3,6 +3,7 @@ from kivy.uix.screenmanager import Screen, ScreenManager
 from kivymd.uix.list import TwoLineListItem, TwoLineAvatarIconListItem
 from functools import partial
 
+
 class TaskList(TwoLineAvatarIconListItem):
     pass
 class AddTaskScreen(Screen):
