@@ -6,17 +6,38 @@ from kivy.clock import Clock
 from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelTwoLine
 from kivymd.uix.list import TwoLineAvatarIconListItem
 from kivymd.uix.boxlayout import MDBoxLayout
+from kivymd.uix.gridlayout import MDGridLayout
 from kivymd.uix.list import IRightBodyTouch
 from kivymd.uix.label import MDLabel
 from functools import partial
-
+from kivymd.uix.dialog import MDDialog
+from kivymd.uix.button import MDFlatButton, MDIconButton
+from kivy.properties import NumericProperty
 
 today_element = ''
 
+class ItemContent(MDBoxLayout):
+    number = NumericProperty()
+
+    def increment_time(self, interval):
+        self.number += 1
+
+    def start(self):
+        Clock.unschedule(self.increment_time)
+        Clock.schedule_interval(self.increment_time, 60)
+
+
+    def stop(self):
+        Clock.unschedule(self.increment_time)
+
+    def end(self):
+        #popup - czy zerować czy zapisać czas i zadanie zrobione
+        print('popup tu ma byc')
 
 class TodayScreen(Screen):
 
     def today(self):
+
         mycursor = main.sqliteConnection.cursor()
 
         mycursor.execute("SELECT b.id_task, a.task_name, a.scheduled_time "
@@ -37,14 +58,16 @@ class TodayScreen(Screen):
 
         for i in range(len(task_name)):
             self.ids.today_list.add_widget(
-                List(
+                MDExpansionPanel(
+                    icon='logo.png',
+                    content=ItemContent(),
+                    panel_cls=MDExpansionPanelTwoLine(
                         text=f'{str(task_name[i])}',
-                        secondary_text=f'{str(task_time[i])} minutes',
-                        theme_text_color='Custom',
-                        text_color=get_color_from_hex('#e5e5e5'),
-                        font_style='Subtitle1',
-                        on_press = partial(get_element_of_list, task_id[i],))
-                )
+                        secondary_text=f'{str(task_time[i])} minutes')
+
+                ))
+
+
 
         mycursor.execute(f"SELECT sum(a.scheduled_time) "
                          f"FROM task_type a "
@@ -52,6 +75,7 @@ class TodayScreen(Screen):
                          f"ON a.id_type=b.id_type "
                          f"WHERE b.scheduled_date = date('now')")
         row = mycursor.fetchone()
+
         try:
             time_on_this_date = int(row[0])
             print(time_on_this_date)
@@ -79,15 +103,46 @@ class TodayScreen(Screen):
                     font_size=20
                 )
             )
-def get_element_of_list(the_element, zmienna_nadmiarowa):
-    today_element = the_element
-    print(today_element)
 
+        def on_panel_open(self, instance_panel):
+            print(task_id[i])
+
+def get_id(task, nadmiarowa):
+    id_task = task
+    print(id_task)
+
+def show_MDDialog(the_element, zmienna_n):
+    today_element = the_element
+    my_dialog = MDDialog(
+        title="MDDialog - tytuł",
+        text = "Are you sure this?!",
+        buttons=[
+            MDIconButton(
+                icon = 'check'
+            ),
+            MDIconButton(
+                icon = 'play-outline'
+            ),
+            MDIconButton(
+                icon='pause-octagon-outline'
+            ),
+            MDIconButton(
+                icon='stop-circle-outline'
+            ),
+            MDIconButton(
+                icon='delete-empty-outline'
+            )
+        ],
+        size_hint=[1, .5],
+        auto_dismiss = False
+        )
+    my_dialog.open()
+    print(today_element)
 
 
 class List(TwoLineAvatarIconListItem):
     def time(self):
-        print('I cyk czas')
+        print('Ehhhhh')
     def delete(self):
         print('I cyk ni ma')
     def done(self):

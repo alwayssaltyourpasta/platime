@@ -1,3 +1,50 @@
+<ItemContent>:
+    size_hint_y: None
+    adaptive_height: True
+    #height: self.minimum_height
+    orientation: 'horizontal'
+
+    MDIconButton:
+        icon: 'play-outline'
+        #size_hint: (0.15, .5)
+        on_press:
+            root.start()
+
+
+    MDIconButton:
+        icon: 'pause-octagon-outline'
+        #size_hint: (0.15, .5)
+        on_press:
+            root.stop()
+            print(root.number)
+
+    MDIconButton:
+        icon: 'stop-circle-outline'
+        #size_hint: (0.15, .5)
+        on_press:
+            root.stop()
+            root.number = 0
+            root.end()
+
+
+    MDLabel:
+        text: f"{str(root.number)} minutes"
+        text_size: self.size
+        halign: 'center'
+        valign: 'middle'
+        theme_text_color: 'Custom'
+        text_color: hex('#3CB371')
+        font_style: 'Caption'
+        font_size: 10
+
+    MDIconButton:
+        icon: 'check'
+        #size_hint: (0.15, None)
+
+    MDIconButton:
+        icon: 'delete-empty-outline'
+        #size_hint: (0.15, None)
+
 <List>:
     IconLeftWidget:
         icon: 'check'
