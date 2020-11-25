@@ -5,14 +5,39 @@ from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.list import IRightBodyTouch
 from kivy.utils import get_color_from_hex
 from kivymd.uix.label import MDLabel
-
+from kivymd.uix.dialog import MDDialog
+from kivymd.uix.button import MDFlatButton
 
 class ListW(TwoLineAvatarIconListItem):
-    def edit(self):
-        print('I cyk zmiana')
-    def delete(self):
-        print('I cyk ni ma')
-
+    def delete_task(self):
+        self.dialog = MDDialog(
+            text="Are you sure, you wanna delete this task?",
+            size_hint=[0.8, 0.5],
+            auto_dismiss=False,
+            buttons=[MDFlatButton(text="Yeah!", on_release=self.delete_from_db),
+                     MDFlatButton(text="Not really", on_release=self.close_dialog)
+                     ]
+        )
+        self.dialog.open()
+    def done_task(self):
+        self.dialog = MDDialog(
+            text="Are you sure, have you done this task?",
+            size_hint=[0.8, 0.5],
+            auto_dismiss=False,
+            buttons=[MDFlatButton(text="Yeah!", on_release=self.add_done_date),
+                     MDFlatButton(text="Not really", on_release=self.close_dialog)
+                     ]
+        )
+        self.dialog.open()
+#back to today_screen without saving to database
+    def close_dialog(self, inst):
+        self.dialog.dismiss()
+#delete from db function
+    def delete_from_db(self, inst):
+        self.dialog.dismiss()
+#add done date to id task that makes task done and not show it on main screen
+    def add_done_date(self, init):
+        self.dialog.dismiss()
 
 class ContainerW(IRightBodyTouch, MDBoxLayout):
     adaptive_width = True
@@ -20,10 +45,8 @@ class ContainerW(IRightBodyTouch, MDBoxLayout):
 
 class WorkPlanScreen(Screen):
     def show_datepicker(self):
-
         picker = main.MDDatePicker(callback=self.got_date)
         picker.open()
-
         # function which have to choose date add to tak in datebase
 
     def got_date(self, the_date):
@@ -36,14 +59,14 @@ def work_plan_f(self, date_new):
     string_date = str(date_new)
     print(string_date)
     mycursor = main.sqliteConnection.cursor()
-    mycursor.execute(f"SELECT a.task_name, a.scheduled_time "
+    mycursor.execute(f"SELECT a.task_name, a.scheduled_time, b.id_task "
                      "FROM task_type a "
                      "JOIN work_plan b "
                      "ON a.id_type=b.id_type "
                      "WHERE b.scheduled_date = ? ", (string_date,))
     rows = mycursor.fetchall()
 
-
+    task_id = []
     task_name = []
     task_time = []
 
@@ -52,6 +75,7 @@ def work_plan_f(self, date_new):
 
         task_name.append(rows[i][0])
         task_time.append(rows[i][1])
+        task_id.append(rows[i][2])
 
 
 
@@ -62,7 +86,8 @@ def work_plan_f(self, date_new):
                 secondary_text=f'{str(task_time[i])} minutes',
                 theme_text_color='Custom',
                 text_color=get_color_from_hex('#e5e5e5'),
-                font_style='Subtitle1')
+                font_style='Subtitle1'
+            )
         )
 
     self.ids.date_label.add_widget(

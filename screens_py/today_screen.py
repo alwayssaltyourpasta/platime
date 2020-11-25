@@ -13,10 +13,14 @@ from functools import partial
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.button import MDFlatButton, MDIconButton
 from kivy.properties import NumericProperty
+from kivy.uix.relativelayout import RelativeLayout
+from kivymd.uix.dialog import MDDialog
+from kivymd.uix.button import MDFlatButton
 
 
 class ItemContent(MDBoxLayout):
-    seconds = NumericProperty()
+
+
     minutes = NumericProperty()
 
     def increment_time(self, interval):
@@ -24,15 +28,53 @@ class ItemContent(MDBoxLayout):
 
     def start(self):
         Clock.unschedule(self.increment_time)
-        Clock.schedule_interval(self.increment_time, 1)
+        Clock.schedule_interval(self.increment_time, 60)
 
     def stop(self):
         Clock.unschedule(self.increment_time)
 
     def end(self):
-        #popup - czy zerować czy zapisać czas i zadanie zrobione
-        print('popup tu ma byc')
-
+        self.dialog = MDDialog(
+            text="Are you sure, you wanna save your time and end this task?",
+            size_hint=[0.8, 0.5],
+            auto_dismiss=False,
+            buttons=[MDFlatButton(text="Yeah!", on_release=self.save_time),
+                     MDFlatButton(text="Not really", on_release=self.close_dialog)
+                     ]
+        )
+        self.dialog.open()
+    def delete_task(self):
+        self.dialog = MDDialog(
+            text="Are you sure, you wanna delete this task?",
+            size_hint=[0.8, 0.5],
+            auto_dismiss=False,
+            buttons=[MDFlatButton(text="Yeah!", on_release=self.delete_from_db),
+                     MDFlatButton(text="Not really", on_release=self.close_dialog)
+                     ]
+        )
+        self.dialog.open()
+    def done_task(self):
+        self.dialog = MDDialog(
+            text="Are you sure, have you done this task?",
+            size_hint=[0.8, 0.5],
+            auto_dismiss=False,
+            buttons=[MDFlatButton(text="Yeah!", on_release=self.add_done_date),
+                     MDFlatButton(text="Not really", on_release=self.close_dialog)
+                     ]
+        )
+        self.dialog.open()
+#back to today_screen without saving to database
+    def close_dialog(self, inst):
+        self.dialog.dismiss()
+#save to db, task done -> done date = no in today screen
+    def save_time(self, inst):
+        self.dialog.dismiss()
+#delete from db function
+    def delete_from_db(self, inst):
+        self.dialog.dismiss()
+#add done date to id task that makes task done and not show it on main screen
+    def add_done_date(self, init):
+        self.dialog.dismiss()
 class TodayScreen(Screen):
 
     def today(self):
@@ -46,23 +88,23 @@ class TodayScreen(Screen):
                          "WHERE b.scheduled_date = date('now') ")
         rows = mycursor.fetchall()
 
-        task_id = []
-        task_name = []
-        task_time = []
+        self.task_id = []
+        self.task_name = []
+        self.task_time = []
 
         for i in range(len(rows)):
-            task_id.append(rows[i][0])
-            task_name.append(rows[i][1])
-            task_time.append(rows[i][2])
+            self.task_id.append(rows[i][0])
+            self.task_name.append(rows[i][1])
+            self.task_time.append(rows[i][2])
 
-        for i in range(len(task_name)):
+        for i in range(len(self.task_name)):
             self.ids.today_list.add_widget(
-                MDExpansionPanel(
+                Panel(
                     icon='logo.png',
                     content=ItemContent(),
                     panel_cls=MDExpansionPanelTwoLine(
-                        text=f'{str(task_name[i])}',
-                        secondary_text=f'{str(task_time[i])} minutes')
+                        text=f'{str(self.task_name[i])}',
+                        secondary_text=f'{str(self.task_time[i])} minutes')
 
                 ))
 
@@ -103,9 +145,10 @@ class TodayScreen(Screen):
                 )
             )
 
-        def on_panel_open(self, instance_panel):
-            print(instance_panel)
-
+class Panel(MDExpansionPanel):
+    def on_open(self, *args):
+        pobranie_z_today = 'hmmmmm'
+        print(pobranie_z_today)
 
 sm = ScreenManager()
 sm.add_widget(TodayScreen(name="today_screen"))

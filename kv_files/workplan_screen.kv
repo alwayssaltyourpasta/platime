@@ -3,7 +3,7 @@
 
         icon: 'check'
         on_release:
-            root.edit()
+            root.done_task()
     ContainerW:
         id:container_plan
 
@@ -11,7 +11,7 @@
             icon: 'delete-empty-outline'
             size_hint: (0.15, None)
             on_release:
-                root.delete()
+                root.delete_task()
 <WorkPlanScreen>:
     on_pre_enter:
         root.show_datepicker()

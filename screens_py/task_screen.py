@@ -4,17 +4,28 @@ from kivymd.uix.list import TwoLineAvatarIconListItem
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.list import IRightBodyTouch
 from kivy.utils import get_color_from_hex
-
+from functools import partial
+from kivymd.uix.dialog import MDDialog
+from kivymd.uix.button import MDFlatButton
 
 class ListT(TwoLineAvatarIconListItem):
-    def edit(self):
-        print('I cyk zmiana')
     def delete(self):
-        print('I cyk ni ma')
+        self.dialog = MDDialog(
+            text="Are you sure, you wanna delete this task?",
+            size_hint=[0.8, 0.5],
+            auto_dismiss=False,
+            buttons=[MDFlatButton(text="Yeah!", on_release=self.delete_from_db),
+                     MDFlatButton(text="Not really", on_release=self.close_dialog)
+                     ]
+        )
+        self.dialog.open()
+#back to today_screen without saving to database
+    def close_dialog(self, inst):
+        self.dialog.dismiss()
 
-
-class ContainerT(IRightBodyTouch, MDBoxLayout):
-    adaptive_width = True
+#delete from db function
+    def delete_from_db(self, inst):
+        self.dialog.dismiss()
 
 class TaskScreen(Screen):
     def all_tasks(self):
@@ -38,8 +49,11 @@ class TaskScreen(Screen):
                     theme_text_color='Custom',
                     text_color=get_color_from_hex('#e5e5e5'),
                     font_style='Subtitle1',
-                    on_press=lambda x: print(x.text))
+                    on_press=partial(self.task, task_name[i],))
                 )
+    def task(self, name, nadmiar):
+        self.zmienna = name
+        print(self.zmienna)
 
 
 sm = ScreenManager()

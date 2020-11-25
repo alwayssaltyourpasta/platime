@@ -1,17 +1,9 @@
 <ListT>:
     IconLeftWidget:
 
-        icon: 'file-document-edit-outline'
+        icon: 'delete-empty-outline'
         on_release:
-            root.edit()
-    ContainerT:
-        id:container_task
-
-        MDIconButton:
-            icon: 'delete-empty-outline'
-            size_hint: (0.15, None)
-            on_release:
-                root.delete()
+            root.delete()
 
 <TaskScreen>:
     on_pre_enter:

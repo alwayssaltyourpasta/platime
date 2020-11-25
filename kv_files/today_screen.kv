@@ -7,26 +7,21 @@
 
     MDIconButton:
         icon: 'play-outline'
-        #size_hint: (0.15, .5)
         on_press:
             root.start()
 
-
     MDIconButton:
         icon: 'pause-octagon-outline'
-        #size_hint: (0.15, .5)
         on_press:
             root.stop()
-            print(root.number)
+            print(root.minutes)
 
     MDIconButton:
         icon: 'stop-circle-outline'
-        #size_hint: (0.15, .5)
         on_press:
             root.stop()
             root.minutes = 0
             root.end()
-
 
     MDLabel:
         text: str(root.minutes)  + " minutes"
@@ -41,11 +36,13 @@
 
     MDIconButton:
         icon: 'check'
-        #size_hint: (0.15, None)
+        on_release:
+            root.done_task()
 
     MDIconButton:
         icon: 'delete-empty-outline'
-        #size_hint: (0.15, None)
+        on_release:
+            root.delete_task()
 
 
 <TodayScreen>:
@@ -95,3 +92,4 @@
             icon: 'poll'
             on_release:
                 root.manager.current = 'statistics_screen'
+
