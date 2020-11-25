@@ -1,18 +1,43 @@
 import main
 from kivy.uix.screenmanager import Screen, ScreenManager
-from kivymd.uix.list import TwoLineAvatarIconListItem
-from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.list import IRightBodyTouch
+from kivymd.uix.list import TwoLineListItem
 from kivy.utils import get_color_from_hex
 from functools import partial
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.button import MDFlatButton
-from kivymd.icon_definitions import md_icons
 
-class ListT(TwoLineAvatarIconListItem):
-    def delete(self):
 
+class TaskScreen(Screen):
+    def all_tasks(self):
+        mycursor = main.sqliteConnection.cursor()
+        mycursor.execute("SELECT id_type, task_name, scheduled_time "
+                         "FROM task_type ")
+        rows = mycursor.fetchall()
+        task_id = []
+        task_name = []
+        task_time = []
+
+        for i in range(len(rows)):
+            task_id.append(rows[i][0])
+            task_name.append(rows[i][1])
+            task_time.append(rows[i][2])
+
+        for i in range(len(task_name)):
+            self.ids.task_list.add_widget(
+                TwoLineListItem(
+                    text=f'{str(task_name[i])}',
+                    secondary_text=f'{str(task_time[i])} minutes',
+                    theme_text_color='Custom',
+                    text_color=get_color_from_hex('#e5e5e5'),
+                    font_style='Subtitle1',
+                    on_press=partial(self.create_dialog, task_id[i],))
+                )
+
+    def create_dialog(self, task_id, nadmiar):
+        self.task = task_id
+        print(self.task)
         self.dialog = MDDialog(
+
             text="Are you sure, you wanna delete this task?",
             size_hint=[0.8, 0.5],
             auto_dismiss=False,
@@ -21,41 +46,22 @@ class ListT(TwoLineAvatarIconListItem):
                      ]
         )
         self.dialog.open()
-#back to today_screen without saving to database
+        # back to today_screen without saving to database
+
     def close_dialog(self, inst):
         self.dialog.dismiss()
 
-#delete from db function
+        # delete from db function
+
     def delete_from_db(self, inst):
-        self.dialog.dismiss()
 
-class TaskScreen(Screen):
-    def all_tasks(self):
         mycursor = main.sqliteConnection.cursor()
-        mycursor.execute("SELECT task_name, scheduled_time "
-                         "FROM task_type ")
-        rows = mycursor.fetchall()
+        mycursor.execute(f"DELETE FROM task_type WHERE id_type = ?", (self.task,))
+        main.sqliteConnection.commit()
 
-        task_name = []
-        task_time = []
-
-        for i in range(len(rows)):
-            task_name.append(rows[i][0])
-            task_time.append(rows[i][1])
-
-        for i in range(len(task_name)):
-            self.ids.task_list.add_widget(
-                ListT(
-                    text=f'{str(task_name[i])}',
-                    secondary_text=f'{str(task_time[i])} minutes',
-                    theme_text_color='Custom',
-                    text_color=get_color_from_hex('#e5e5e5'),
-                    font_style='Subtitle1',
-                    on_press=partial(task, task_name[i],))
-                )
-def task(name, nadmiar):
-    task.zmienna = name
-    print(task.zmienna)
+        self.ids.task_list.clear_widgets()
+        self.all_tasks()
+        self.dialog.dismiss()
 
 
 sm = ScreenManager()

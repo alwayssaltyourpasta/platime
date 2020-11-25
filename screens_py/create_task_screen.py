@@ -46,9 +46,9 @@ class CreateTaskScreen(Screen):
         else:
 
             mycursor.execute(
-                f" INSERT INTO task_type ( id_type, task_name, scheduled_time) \
-                                                VALUES ({len(rows)+1},'{self.ids.task_name.text}', '{self.ids.task_time.text}')")
-            print("Done - number is bigger than 1")
+                f" INSERT INTO task_type ( task_name, scheduled_time) \
+                                                VALUES ('{self.ids.task_name.text}', '{self.ids.task_time.text}')")
+            print("Done")
             main.sqliteConnection.commit()
 
     #close dialog with warnings

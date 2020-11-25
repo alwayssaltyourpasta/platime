@@ -43,6 +43,7 @@ class ItemContent(MDBoxLayout):
         self.dialog.dismiss()
 
     def delete_task(self):
+
         self.dialog = MDDialog(
             text="Are you sure, you wanna delete this task?",
             size_hint=[0.8, 0.5],
@@ -54,8 +55,7 @@ class ItemContent(MDBoxLayout):
         self.dialog.open()
 
     def done_task(self):
-        done_task_id = task.zmienna
-        print(done_task_id)
+
         self.dialog = MDDialog(
             text="Are you sure, have you done this task?",
             size_hint=[0.8, 0.5],
@@ -87,22 +87,23 @@ class ItemContent(MDBoxLayout):
     def delete_from_db(self, inst):
 
         task_id_to_delete = int(task.zmienna)
-        print(task_id_to_delete)
 
         mycursor = main.sqliteConnection.cursor()
         mycursor.execute(f"DELETE FROM work_plan WHERE id_task=?",(task_id_to_delete,))
         main.sqliteConnection.commit()
 
+        #TodayScreen().today()
         self.dialog.dismiss()
 
     #done date to task
     def add_done_date(self, init):
+
         done_task_id = int(task.zmienna)
-        print(done_task_id)
 
         mycursor = main.sqliteConnection.cursor()
         mycursor.execute(f"UPDATE work_plan SET done_date = date('now') WHERE id_task = ?", (done_task_id,))
         main.sqliteConnection.commit()
+
         self.dialog.dismiss()
 
 
@@ -111,7 +112,6 @@ class TodayScreen(Screen):
     def today(self):
 
         mycursor = main.sqliteConnection.cursor()
-
         mycursor.execute("SELECT b.id_task, a.task_name, a.scheduled_time "
                          "FROM task_type a "
                          "JOIN work_plan b "
@@ -148,7 +148,6 @@ class TodayScreen(Screen):
 
         try:
             time_on_this_date = int(row[0])
-            print(time_on_this_date)
 
             self.ids.time.add_widget(
                 MDLabel(
@@ -161,7 +160,9 @@ class TodayScreen(Screen):
                     font_size= 10
                 )
             )
+
         except:
+
             self.ids.time.add_widget(
                 MDLabel(
                     text="F R E E  T I M E! \nP L A N  Y O U R  D A Y",
@@ -177,7 +178,7 @@ class TodayScreen(Screen):
 
 def task(name, nadmiar):
     task.zmienna = name
-    print(task.zmienna)
+
 
 sm = ScreenManager()
 sm.add_widget(TodayScreen(name="today_screen"))

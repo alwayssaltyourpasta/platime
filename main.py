@@ -49,6 +49,7 @@ class Start(Screen):
     def on_enter(self, *args):
         Clock.schedule_once(self.skip, 0)
 
+
 #main class - app
 class PlatimeApp(MDApp):
     def __init__(self, **kwargs):
