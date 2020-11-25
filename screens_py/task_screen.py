@@ -7,9 +7,11 @@ from kivy.utils import get_color_from_hex
 from functools import partial
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.button import MDFlatButton
+from kivymd.icon_definitions import md_icons
 
 class ListT(TwoLineAvatarIconListItem):
     def delete(self):
+
         self.dialog = MDDialog(
             text="Are you sure, you wanna delete this task?",
             size_hint=[0.8, 0.5],
@@ -49,11 +51,11 @@ class TaskScreen(Screen):
                     theme_text_color='Custom',
                     text_color=get_color_from_hex('#e5e5e5'),
                     font_style='Subtitle1',
-                    on_press=partial(self.task, task_name[i],))
+                    on_press=partial(task, task_name[i],))
                 )
-    def task(self, name, nadmiar):
-        self.zmienna = name
-        print(self.zmienna)
+def task(name, nadmiar):
+    task.zmienna = name
+    print(task.zmienna)
 
 
 sm = ScreenManager()

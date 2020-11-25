@@ -1,25 +1,18 @@
 import main
 from kivy.uix.screenmanager import Screen, ScreenManager
-from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanel
 from kivy.utils import get_color_from_hex
 from kivy.clock import Clock
 from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelTwoLine
-from kivymd.uix.list import TwoLineAvatarIconListItem
 from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.gridlayout import MDGridLayout
-from kivymd.uix.list import IRightBodyTouch
 from kivymd.uix.label import MDLabel
 from functools import partial
-from kivymd.uix.dialog import MDDialog
-from kivymd.uix.button import MDFlatButton, MDIconButton
 from kivy.properties import NumericProperty
-from kivy.uix.relativelayout import RelativeLayout
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.button import MDFlatButton
+from kivymd.icon_definitions import md_icons
 
 
 class ItemContent(MDBoxLayout):
-
 
     minutes = NumericProperty()
 
@@ -28,7 +21,7 @@ class ItemContent(MDBoxLayout):
 
     def start(self):
         Clock.unschedule(self.increment_time)
-        Clock.schedule_interval(self.increment_time, 60)
+        Clock.schedule_interval(self.increment_time, 1)
 
     def stop(self):
         Clock.unschedule(self.increment_time)
@@ -36,13 +29,19 @@ class ItemContent(MDBoxLayout):
     def end(self):
         self.dialog = MDDialog(
             text="Are you sure, you wanna save your time and end this task?",
-            size_hint=[0.8, 0.5],
+            size_hint=[0.9, 0.5],
             auto_dismiss=False,
             buttons=[MDFlatButton(text="Yeah!", on_release=self.save_time),
+                     MDFlatButton(text="Just reset the time", on_release=self.reset_time),
                      MDFlatButton(text="Not really", on_release=self.close_dialog)
                      ]
         )
         self.dialog.open()
+
+    def reset_time(self, inst):
+        self.minutes = 0
+        self.dialog.dismiss()
+
     def delete_task(self):
         self.dialog = MDDialog(
             text="Are you sure, you wanna delete this task?",
@@ -53,7 +52,10 @@ class ItemContent(MDBoxLayout):
                      ]
         )
         self.dialog.open()
+
     def done_task(self):
+        done_task_id = task.zmienna
+        print(done_task_id)
         self.dialog = MDDialog(
             text="Are you sure, have you done this task?",
             size_hint=[0.8, 0.5],
@@ -63,18 +65,47 @@ class ItemContent(MDBoxLayout):
                      ]
         )
         self.dialog.open()
+
 #back to today_screen without saving to database
     def close_dialog(self, inst):
         self.dialog.dismiss()
-#save to db, task done -> done date = no in today screen
+
+    #save to db, task done -> done date = no in today screen
     def save_time(self, inst):
+
+        task_time = self.minutes
+        task_id = task.zmienna
+
+        mycursor = main.sqliteConnection.cursor()
+        mycursor.execute(f"UPDATE work_plan SET execution_time = ?, done_date=date('now') WHERE id_task = ?", (task_time, task_id, ))
+        main.sqliteConnection.commit()
+
+        self.minutes = 0
         self.dialog.dismiss()
-#delete from db function
+
+    #delete task from work plan
     def delete_from_db(self, inst):
+
+        task_id_to_delete = int(task.zmienna)
+        print(task_id_to_delete)
+
+        mycursor = main.sqliteConnection.cursor()
+        mycursor.execute(f"DELETE FROM work_plan WHERE id_task=?",(task_id_to_delete,))
+        main.sqliteConnection.commit()
+
         self.dialog.dismiss()
-#add done date to id task that makes task done and not show it on main screen
+
+    #done date to task
     def add_done_date(self, init):
+        done_task_id = int(task.zmienna)
+        print(done_task_id)
+
+        mycursor = main.sqliteConnection.cursor()
+        mycursor.execute(f"UPDATE work_plan SET done_date = date('now') WHERE id_task = ?", (done_task_id,))
+        main.sqliteConnection.commit()
         self.dialog.dismiss()
+
+
 class TodayScreen(Screen):
 
     def today(self):
@@ -85,7 +116,7 @@ class TodayScreen(Screen):
                          "FROM task_type a "
                          "JOIN work_plan b "
                          "ON a.id_type=b.id_type "
-                         "WHERE b.scheduled_date = date('now') ")
+                         "WHERE b.scheduled_date = date('now') AND b.done_date IS NULL")
         rows = mycursor.fetchall()
 
         self.task_id = []
@@ -99,22 +130,20 @@ class TodayScreen(Screen):
 
         for i in range(len(self.task_name)):
             self.ids.today_list.add_widget(
-                Panel(
+                MDExpansionPanel(
                     icon='logo.png',
                     content=ItemContent(),
                     panel_cls=MDExpansionPanelTwoLine(
                         text=f'{str(self.task_name[i])}',
-                        secondary_text=f'{str(self.task_time[i])} minutes')
-
-                ))
-
-
+                        secondary_text=f'{str(self.task_time[i])} minutes',
+                        on_press = partial(task, self.task_id[i],)
+                )))
 
         mycursor.execute(f"SELECT sum(a.scheduled_time) "
                          f"FROM task_type a "
                          f"JOIN work_plan b "
                          f"ON a.id_type=b.id_type "
-                         f"WHERE b.scheduled_date = date('now')")
+                         f"WHERE b.scheduled_date = date('now') AND b.done_date IS NULL")
         row = mycursor.fetchone()
 
         try:
@@ -145,10 +174,10 @@ class TodayScreen(Screen):
                 )
             )
 
-class Panel(MDExpansionPanel):
-    def on_open(self, *args):
-        pobranie_z_today = 'hmmmmm'
-        print(pobranie_z_today)
+
+def task(name, nadmiar):
+    task.zmienna = name
+    print(task.zmienna)
 
 sm = ScreenManager()
 sm.add_widget(TodayScreen(name="today_screen"))

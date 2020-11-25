@@ -91,13 +91,16 @@ builder_string = """
 Screen:
     ScreenManager:
         transition: NoTransition()
+        Start:
         TodayScreen:
         TaskScreen:
         StatisticsScreen:
         AddTaskScreen:
         CreateTaskScreen:
         WorkPlanScreen:
-    
+<Start>:
+    name: 'start'
+       
 <MyContent>:
     #height tego contentu co sie wysuwa
     adaptive_height: True

@@ -20,7 +20,6 @@
         icon: 'stop-circle-outline'
         on_press:
             root.stop()
-            root.minutes = 0
             root.end()
 
     MDLabel:
@@ -46,11 +45,11 @@
 
 
 <TodayScreen>:
-    on_pre_enter:
-
+    on_enter:
         today_list.clear_widgets()
         time.clear_widgets()
         root.today()
+
 
     name: 'today_screen'
     Platime
