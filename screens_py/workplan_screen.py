@@ -6,11 +6,12 @@ from kivymd.uix.label import MDLabel
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.button import MDFlatButton
 from functools import partial
+from kivymd.uix.picker import MDDatePicker
 
 
 class WorkPlanScreen(Screen):
     def show_datepicker(self):
-        picker = main.MDDatePicker(callback=self.create_work_plan)
+        picker = MDDatePicker(callback=self.create_work_plan)
         picker.open()
         # function which have to choose date add to tak in datebase
 
