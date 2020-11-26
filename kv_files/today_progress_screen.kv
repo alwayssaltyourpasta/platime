@@ -1,19 +1,35 @@
 <TodayProgress>:
     on_enter:
         progress.clear_widgets()
+        today_stats.clear_widgets()
+        root.day_progress()
         root.today_progress()
     name: 'today_progress'
     Platime
     InfoLabel:
         text: "T O D A Y  P R O G R E S S"
-    MDFloatLayout:
-        id:progress
+
     MDIconButton:
         pos_hint: {"x": 0.05, "y": 0.914}
         icon: 'arrow-left'
         size:(50,50)
         on_release:
             root.manager.current = 'statistics_screen'
+    FloatLayout:
+        id: today_stats
+        pos_hint: {"x": 0.05, "y": .65}
+        size_hint: (0.9, 0.5)
+    MDFloatLayout:
+        id:progress
+
+    MDLabel:
+        text: "P R O G R E S S"
+        halign: 'center'
+        pos_hint: {"center_x": 0.5, "center_y": 0.6}
+        theme_text_color: 'Custom'
+        text_color: hex('#3CB371')
+        font_style: 'Body1'
+        font_size: 10
     BoxLayout:
         orientation: 'horizontal'
         NavigatorButton:
