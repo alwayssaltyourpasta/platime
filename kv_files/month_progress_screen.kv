@@ -1,0 +1,29 @@
+
+
+<MonthProgress>:
+
+    name: 'month_progress'
+    Platime
+    InfoLabel:
+        text: "M O N T H  P R O G R E S S"
+    MDIconButton:
+        pos_hint: {"x": 0.05, "y": 0.914}
+        icon: 'arrow-left'
+        size:(50,50)
+        on_release:
+            root.manager.current = 'statistics_screen'
+    BoxLayout:
+        orientation: 'horizontal'
+        NavigatorButton:
+            icon: 'clock-fast'
+            on_release:
+                root.manager.current = 'today_screen'
+
+        NavigatorButton:
+            icon: 'format-list-checks'
+            on_release:
+                root.manager.current = 'task_screen'
+        NavigatorButton:
+            icon: 'poll'
+            on_release:
+                root.manager.current = 'statistics_screen'

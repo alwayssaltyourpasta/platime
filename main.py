@@ -29,6 +29,9 @@ import screens_py.statistics_screen
 import screens_py.add_screen
 import screens_py.create_task_screen
 import screens_py.workplan_screen
+import screens_py.today_progress_screen
+import screens_py.month_progress_screen
+import screens_py.year_progress_screen
 
 
 #only for development

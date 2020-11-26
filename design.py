@@ -9,7 +9,9 @@ builder_string = """
 #: include kv_files/create_task_screen.kv
 #: include kv_files/add_screen.kv
 #: include kv_files/workplan_screen.kv
-
+#: include kv_files/today_progress_screen.kv
+#: include kv_files/month_progress_screen.kv
+#: include kv_files/year_progress_screen.kv
 
 <ListItemWithCheckbox>:
 
@@ -48,7 +50,9 @@ builder_string = """
     text: "Choose task"
     icon: 'format-list-bulleted'
     pos_hint: {"center_x": 0.5, "center_y": 0.65}
-    
+<ChooseStatistics@MDRoundFlatButton>:
+    size_hint: (0.3, 0.1)
+    text_color: hex('#e5e5e5')
 #Labels      
 <InfoLabel@MDLabel>:
     halign: 'center'
@@ -66,7 +70,8 @@ builder_string = """
     text_color: hex('#e5e5e5')
     font_style: 'Overline' 
     font_size: 20  
-    
+
+   
 <Date@MDLabel>:
     text: str(datetime.date.today())
     pos_hint: {"center_x":0.5, "center_y": 0.92}  
@@ -95,9 +100,13 @@ Screen:
         TodayScreen:
         TaskScreen:
         StatisticsScreen:
+        TodayProgress:
+        MonthProgress:
+        YearProgress:
         AddTaskScreen:
         CreateTaskScreen:
         WorkPlanScreen:
+        
 <Start>:
     name: 'start'
        

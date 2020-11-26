@@ -5,6 +5,7 @@ from kivy.utils import get_color_from_hex
 from functools import partial
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.button import MDFlatButton
+from kivymd.uix.label import MDLabel
 
 
 class TaskScreen(Screen):
@@ -16,6 +17,7 @@ class TaskScreen(Screen):
         task_id = []
         task_name = []
         task_time = []
+        print(rows)
 
         for i in range(len(rows)):
             task_id.append(rows[i][0])

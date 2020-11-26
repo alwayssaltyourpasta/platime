@@ -1,16 +1,34 @@
 <StatisticsScreen>:
-    on_enter:
+    on_pre_enter:
         buttons.clear_widgets()
         root.task()
+
     name: 'statistics_screen'
     Platime
     InfoLabel:
         text: "S T A T I S T I C S"
 
+
     FloatLayout:
         id: buttons
-        pos_hint: {"x": 0.05, "y": .1}
-        size_hint: (0.9, 0.7)
+        pos_hint: {"x": 0.05, "y": .2}
+        size_hint: (0.9, 0.6)
+
+    ChooseStatistics:
+        text: 'T O D A Y'
+        pos_hint: {"x": 0.04, "y": .1}
+        on_release:
+            root.manager.current = 'today_progress'
+    ChooseStatistics:
+        text: 'M O N T H'
+        pos_hint: {"x": 0.35, "y": .1}
+        on_release:
+            root.manager.current = 'month_progress'
+    ChooseStatistics:
+        text: 'Y E A R'
+        pos_hint: {"x": 0.66, "y": .1}
+        on_release:
+            root.manager.current = 'year_progress'
     BoxLayout:
         orientation: 'horizontal'
         NavigatorButton:
@@ -26,3 +44,4 @@
             icon: 'poll'
             on_release:
                 root.manager.current = 'statistics_screen'
+
