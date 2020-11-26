@@ -85,9 +85,9 @@ def summary(self, number_of_days, main_list):
             font_size=15
             )
         )
-    mycursor.execute("SELECT sum(execution_time) "
+    mycursor.execute("SELECT SUM(execution_time) "
                         "FROM work_plan "
-                        "WHERE done_date <= date('now') AND done_date > ? ", (days,))
+                        "WHERE done_date <= DATE('now') AND done_date > ? ", (days,))
     rows = mycursor.fetchone()
     time = rows[0]
     main_list.add_widget(
@@ -106,12 +106,12 @@ def analysis(self, number_of_days, scroll_list):
     print(days)
     mycursor = sqliteConnection.cursor()
     mycursor.execute(
-        f"select a.task_name, a.scheduled_time, avg(b.execution_time), count(b.id_task), count(b.done_date) "
-        f"from task_type a "
-        f"join work_plan b "
-        f"on a.id_type = b.id_type "
-        f"where b.scheduled_date <= date('now') AND scheduled_date > ?"
-        f"group by b.id_type ", (days,))
+        f"SELECT a.task_name, a.scheduled_time, AVG(b.execution_time), COUNT(b.id_task), count(b.done_date) "
+        f"FROM task_type a "
+        f"JOIN work_plan b "
+        f"ON a.id_type = b.id_type "
+        f"WHERE b.scheduled_date <= DATE('now') AND scheduled_date > ?"
+        f"GROUP BY b.id_type ", (days,))
     rows = mycursor.fetchall()
 
     task_name = []
