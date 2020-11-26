@@ -96,10 +96,15 @@ class MonthProgress(Screen):
         for i in range(len(task_name)):
 
             if avg_time[i]==None:
-                precent = "Oh, I'm sorry but we've got a problem"
+                time_precent = "None"
 
             else:
-                precent = str(int(avg_time[i]/task_time[i]*100))+"%"
+                time_precent = str(int(avg_time[i]/task_time[i]*100))+"%"
+
+            if done_tasks[i]==None:
+                task_precent = "None"
+            else:
+                time_precent = str(int(done_tasks[i]/number_of_task[i]*100)) + "%"
 
             if avg_time[i] == None:
                 avg_time[i] = str(avg_time[i])
@@ -110,8 +115,8 @@ class MonthProgress(Screen):
             self.ids.month_progress.add_widget(
                 ThreeLineListItem(
                     text=str(task_name[i]),
-                    secondary_text=str(done_tasks[i])+"/"+str(number_of_task[i]),
-                    tertiary_text=str(task_time[i]) + "/" + str(avg_time[i]) +"/"+ precent
+                    secondary_text=str(done_tasks[i])+"/"+str(number_of_task[i])+"/"+time_precent,
+                    tertiary_text=str(task_time[i]) + "/" + str(avg_time[i]) +"/"+ time_precent
                 )
             )
 
