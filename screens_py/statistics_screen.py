@@ -16,10 +16,10 @@ class StatisticsScreen(Screen):
 
         self.ids.buttons.add_widget(
             MDRoundFlatButton(
-                text= count_of_types+"\n \nNumber of \nyour task types",
+                text= count_of_types+"\n\n\nT A S K \nT Y P E S",
                 text_color = get_color_from_hex('#e5e5e5'),
-                pos_hint={"center_x": .5, "center_y": .5},
-                size_hint=(0.25, 0.15),
+                pos_hint={"x": .05, "y": .6},
+                size_hint=(0.4, 0.35),
                 font_size = 20
             )
         )
@@ -30,10 +30,11 @@ class StatisticsScreen(Screen):
         print(execution_time)
         self.ids.buttons.add_widget(
             MDRoundFlatButton(
-                text=execution_time,
+                text=execution_time+"\nminutes \n\nW O R K\nT I M E",
                 text_color=get_color_from_hex('#e5e5e5'),
-                pos_hint={"center_x": .5, "center_y": .5},
-                size_hint=(0.25, 0.15)
+                pos_hint={"x": .55, "y": .6},
+                size_hint=(0.4, 0.35),
+                font_size=20
             )
         )
         mycursor.execute("SELECT sum(execution_time) FROM work_plan")
@@ -44,8 +45,8 @@ class StatisticsScreen(Screen):
             MDRoundFlatButton(
                 text=execution_time,
                 text_color=get_color_from_hex('#e5e5e5'),
-                pos_hint={"center_x": .5, "center_y": .5},
-                size_hint=(0.25, 0.15)
+                pos_hint={"x": .05, "y": .2},
+                size_hint=(0.4, 0.35)
             )
         )
         mycursor.execute("SELECT sum(execution_time) FROM work_plan")
@@ -56,8 +57,8 @@ class StatisticsScreen(Screen):
             MDRoundFlatButton(
                 text=execution_time,
                 text_color=get_color_from_hex('#e5e5e5'),
-                pos_hint={"center_x": .5, "center_y": .5},
-                size_hint=(0.25, 0.15)
+                pos_hint={"x": .55, "y": .2},
+                size_hint=(0.4, 0.35)
             )
         )
 sm = ScreenManager()
