@@ -3,13 +3,16 @@ from kivy.uix.screenmanager import Screen, ScreenManager
 from kivymd.uix.progressbar import MDProgressBar
 from kivy.utils import get_color_from_hex
 from kivymd.uix.button import MDRoundFlatButton
+from kivymd.uix.list import ThreeLineListItem
+from kivymd.uix.label import MDLabel
 
 class TodayProgress(Screen):
+
     def day_progress(self):
         mycursor = main.sqliteConnection.cursor()
         mycursor.execute("SELECT count(id_task) "
                          "FROM work_plan "
-                         "WHERE scheduled_date = date('now') ")
+                         "WHERE scheduled_date = date('now') AND done_date IS NULL ")
         rows = mycursor.fetchone()
         count_of_types = str(rows[0])
         print(count_of_types)
@@ -65,16 +68,93 @@ class TodayProgress(Screen):
 
             )
         )
-    def today_progress(self):
-        self.ids.progress.add_widget(
-            MDProgressBar(
-                pos_hint={"center_x": 0.5, "center_y": 0.5},
-                size_hint_x=0.5,
-                value=50,
-                color=get_color_from_hex('#e5e5e5')
+    def time(self):
+        mycursor = main.sqliteConnection.cursor()
+        mycursor.execute("select a.task_name, a.scheduled_time, b.execution_time, avg(b.execution_time) "
+                         "from task_type a "
+                         "join work_plan b "
+                         "on a.id_type = b.id_type "
+                         "where b.scheduled_date = date('now') "
+                         "group by b.id_type ")
+        rows = mycursor.fetchall()
 
+        task_name = []
+        task_time = []
+        real_time = []
+        avg_time = []
+
+        for i in range(len(rows)):
+            task_name.append(rows[i][0])
+            task_time.append(rows[i][1])
+            real_time.append(rows[i][2])
+            avg_time.append(rows[i][3])
+
+        for i in range(len(task_name)):
+            if real_time[i]==None:
+                precent = "You need to measure the time first"
+            else:
+                precent = str(int(real_time[i]/task_time[i]*100))+"%"
+            if avg_time[i]==None:
+                avg_time[i]=str(avg_time[i])
+            else:
+                avg_time[i]=int(avg_time[i])
+            self.ids.progress.add_widget(
+                ThreeLineListItem(
+                    text = str(task_name[i]),
+                    secondary_text= str(real_time[i])+"/"+str(task_time[i])+"/"+str(avg_time[i]),
+                    tertiary_text = precent
+                )
+            )
+    def summary(self):
+        mycursor = main.sqliteConnection.cursor()
+
+        mycursor.execute("SELECT sum(execution_time) "
+                         "FROM work_plan "
+                         "WHERE done_date = date('now')")
+        rows = mycursor.fetchone()
+        time = rows[0]
+
+
+        self.ids.analysis.add_widget(
+            MDRoundFlatButton(
+                text="TOTAL\nTIME\nUTILIZED\n\n"+str(time),
+                text_color=get_color_from_hex('#e5e5e5'),
+                pos_hint={"x": .05, "y": 0},
+                size_hint=(0.27, 0.33),
+                font_size=13
             )
         )
-
+        mycursor.execute("SELECT a.task_name, max(b.execution_time) "
+                         "FROM task_type a "
+                         "JOIN work_plan b "
+                         "ON a.id_type=b.id_type")
+        row = mycursor.fetchone()
+        max_task = row[0]
+        max_time = row[1]
+        self.ids.analysis.add_widget(
+            MDRoundFlatButton(
+                text="MOST\nTIME\nSPENT ON\n"+str(max_task) +"\n"+ str(max_time),
+                text_color=get_color_from_hex('#e5e5e5'),
+                pos_hint={"x": .35, "y": 0},
+                size_hint=(0.27, 0.33),
+                font_size=13
+            )
+        )
+        mycursor.execute("SELECT a.task_name, min(b.execution_time) "
+                         "FROM task_type a "
+                         "JOIN work_plan b "
+                         "ON a.id_type=b.id_type")
+        row = mycursor.fetchone()
+        min_task = row[0]
+        min_time = row[1]
+        self.ids.analysis.add_widget(
+            MDRoundFlatButton(
+                text="LEAST\nTIME\nSPENT ON\n"+str(min_task) +"\n"+ str(min_time),
+                text_color=get_color_from_hex('#e5e5e5'),
+                pos_hint={"x": .65, "y": 0},
+                size_hint=(0.27, 0.33),
+                font_size=13
+            )
+        )
 sm = ScreenManager()
 sm.add_widget(TodayProgress(name="today_progress"))
