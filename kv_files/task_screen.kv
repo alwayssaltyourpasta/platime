@@ -1,7 +1,8 @@
 <TaskScreen>:
     on_pre_enter:
-        task_list.clear_widgets()
         root.all_tasks()
+    on_leave:
+        task_list.clear_widgets()
     name: 'task_screen'
     Platime
     InfoLabel:

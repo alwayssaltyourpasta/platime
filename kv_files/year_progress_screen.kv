@@ -1,9 +1,10 @@
 <YearProgress>:
     on_enter:
-        year_stats.clear_widgets()
-        year_progress.clear_widgets()
         root.year_summary()
         root.year_analysis()
+    on_leave:
+        year_stats.clear_widgets()
+        year_progress.clear_widgets()
     name: 'year_progress'
     Platime
     InfoLabel:

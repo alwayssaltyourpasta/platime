@@ -1,12 +1,12 @@
 <TodayProgress>:
     on_enter:
-        progress.clear_widgets()
-        today_stats.clear_widgets()
-        analysis.clear_widgets()
         root.day_progress()
         root.time()
         root.summary()
-
+    on_leave:
+        progress.clear_widgets()
+        today_stats.clear_widgets()
+        analysis.clear_widgets()
     name: 'today_progress'
     Platime
     InfoLabel:

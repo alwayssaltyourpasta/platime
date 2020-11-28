@@ -46,11 +46,10 @@
 
 <TodayScreen>:
     on_enter:
+        root.today()
+    on_leave:
         today_list.clear_widgets()
         time.clear_widgets()
-        root.today()
-
-
     name: 'today_screen'
     Platime
     Date

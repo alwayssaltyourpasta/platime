@@ -3,8 +3,9 @@
         icon: 'arrow-right'
 <AddTaskScreen>:
     on_pre_enter:
-        choose_list.clear_widgets()
         root.choose_task()
+    on_leave:
+        choose_list.clear_widgets()
     name: 'add_task_screen'
     Platime
     InfoLabel:

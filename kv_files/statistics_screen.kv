@@ -1,8 +1,8 @@
 <StatisticsScreen>:
     on_pre_enter:
-        buttons.clear_widgets()
         root.task()
-
+    on_leave:
+        buttons.clear_widgets()
     name: 'statistics_screen'
     Platime
     InfoLabel:

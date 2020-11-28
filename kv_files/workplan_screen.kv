@@ -1,11 +1,12 @@
 <WorkPlanScreen>:
     on_pre_enter:
         root.show_datepicker()
+
+        #root.work_plan()
+    on_leave:
         work_plan.clear_widgets()
         date_label.clear_widgets()
         time_label.clear_widgets()
-        #root.work_plan()
-
     name: 'work_plan_screen'
     Platime
     Date

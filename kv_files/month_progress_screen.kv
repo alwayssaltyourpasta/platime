@@ -1,9 +1,10 @@
 <MonthProgress>:
     on_enter:
-        month_stats.clear_widgets()
-        month_progress.clear_widgets()
         root.month_summary()
         root.month_analysis()
+    on_leave:
+        month_stats.clear_widgets()
+        month_progress.clear_widgets()
     name: 'month_progress'
     Platime
     InfoLabel:
