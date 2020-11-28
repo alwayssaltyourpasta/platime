@@ -175,7 +175,7 @@ class TodayScreen(Screen):
                 )
             )
 
-
+    
 def task(name, nadmiar):
     task.zmienna = name
 

@@ -6,6 +6,8 @@ from functools import partial
 
 class TaskList(TwoLineAvatarIconListItem):
     pass
+
+
 class AddTaskScreen(Screen):
 
     def choose_task(self):
@@ -35,6 +37,7 @@ class AddTaskScreen(Screen):
                     on_press=partial(self.choosen_task, task_id[i],)
                     )
                 )
+
     #this function call calendar
     def choosen_task(self, task_from_list, nadmiarowa_zmienna):
         self.task_n = int(task_from_list)
@@ -46,14 +49,12 @@ class AddTaskScreen(Screen):
         task_date = str(the_date)
         task_id = self.task_n
 
-        print(task_id)
-        print(task_date)
-
         mycursor = main.sqliteConnection.cursor()
         mycursor.execute(f"INSERT INTO work_plan (id_type, scheduled_date) "
                          f"VALUES (?,?)", (task_id, task_date))
 
         main.sqliteConnection.commit()
+
 
 sm = ScreenManager()
 sm.add_widget(AddTaskScreen(name="add_task_screen"))

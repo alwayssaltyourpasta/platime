@@ -8,28 +8,20 @@
     Platime
     InfoLabel:
         text: "M O N T H  P R O G R E S S"
-    MDIconButton:
-        pos_hint: {"x": 0.05, "y": 0.914}
-        icon: 'arrow-left'
-        size:(50,50)
+    Back:
         on_release:
             root.manager.current = 'statistics_screen'
     FloatLayout:
         id: month_stats
         pos_hint: {"x": 0.05, "y": .65}
         size_hint: (0.9, 0.5)
-    MDLabel:
-        text: "A N A L Y S I S"
-        halign: 'center'
+    Analysis:
         pos_hint: {"center_x": 0.5, "center_y": 0.6}
-        theme_text_color: 'Custom'
-        text_color: hex('#3CB371')
-        font_style: 'Body1'
-        font_size: 10
+
     ScrollView:
         pos_hint: {"x": 0, "y": 0.15}
         size_hint_y: None
-        height: 250
+        height: 400
         MDGridLayout:
             cols: 1
             id: month_progress

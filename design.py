@@ -31,7 +31,12 @@ builder_string = """
 <NavigatorButton@MDIconButton>:
     pos_hint: {"x": 0, "y": 0}
     size_hint: (0.3, None)  
-          
+    
+<Back@MDIconButton>:
+    pos_hint: {"x": 0.1, "y": 0.914}
+    icon: 'arrow-left'
+    size:(50,50)
+                  
 #potwierdz, cofnij
 <ClassicButton@MDFlatButton>:
     text: 'zwykly przycisk'
@@ -53,6 +58,7 @@ builder_string = """
 <ChooseStatistics@MDRoundFlatButton>:
     size_hint: (0.3, 0.1)
     text_color: hex('#e5e5e5')
+    
 #Labels      
 <InfoLabel@MDLabel>:
     halign: 'center'
@@ -61,7 +67,23 @@ builder_string = """
     text_color: hex('#3CB371')
     font_style: 'Body1'
     font_size: 10
-
+    
+<Analysis@MDLabel>:
+    text: "A N A L Y S I S"
+    halign: 'center'
+    pos_hint: {"center_x": 0.5, "center_y": 0.6}
+    theme_text_color: 'Custom'
+    text_color: hex('#3CB371')
+    font_style: 'Body1'
+    font_size: 10
+<TimeProgress@MDLabel>:
+    text: "T I M E"
+    halign: 'center'
+    pos_hint: {"center_x": 0.5, "center_y": 0.6}
+    theme_text_color: 'Custom'
+    text_color: hex('#3CB371')
+    font_style: 'Body1'
+    font_size: 10    
 <Platime@MDLabel>:  
     text: 'P L A T I M E'
     halign: 'center'
@@ -69,9 +91,8 @@ builder_string = """
     theme_text_color: 'Custom'
     text_color: hex('#e5e5e5')
     font_style: 'Overline' 
-    font_size: 20  
+    font_size: 30  
 
-   
 <Date@MDLabel>:
     text: str(datetime.date.today())
     pos_hint: {"center_x":0.5, "center_y": 0.92}  
@@ -79,7 +100,7 @@ builder_string = """
     theme_text_color: 'Custom'
     text_color: hex('#e5e5e5')
     font_style: 'Caption' 
-    font_size: 10
+    font_size: 15
     
 #TextFields
 <EnterField@MDTextField>:

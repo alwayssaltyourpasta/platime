@@ -88,7 +88,7 @@ class TodayProgress(Screen):
             task_time.append(rows[i][1])
             real_time.append(rows[i][2])
             avg_time.append(rows[i][3])
-
+        print(avg_time)
         for i in range(len(task_name)):
             if real_time[i]==None:
                 precent = "You need to measure the time first"
@@ -127,7 +127,8 @@ class TodayProgress(Screen):
         mycursor.execute("SELECT a.task_name, max(b.execution_time) "
                          "FROM task_type a "
                          "JOIN work_plan b "
-                         "ON a.id_type=b.id_type")
+                         "ON a.id_type=b.id_type "
+                         "WHERE done_date = date('now') ")
         row = mycursor.fetchone()
         max_task = row[0]
         max_time = row[1]
@@ -143,7 +144,8 @@ class TodayProgress(Screen):
         mycursor.execute("SELECT a.task_name, min(b.execution_time) "
                          "FROM task_type a "
                          "JOIN work_plan b "
-                         "ON a.id_type=b.id_type")
+                         "ON a.id_type=b.id_type "
+                         "WHERE done_date = date('now') ")
         row = mycursor.fetchone()
         min_task = row[0]
         min_time = row[1]

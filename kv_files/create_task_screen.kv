@@ -1,11 +1,10 @@
 <CreateTaskScreen>:
+    on_leave:
+        root.clear_inputs([task_name, task_time])
     name: 'create_task_screen'
 
     Platime
-    MDIconButton:
-        pos_hint: {"x": 0.05, "y": 0.914}
-        icon: 'arrow-left'
-        size:(50,50)
+    Back:
         on_release:
             root.manager.current = 'task_screen'
 
