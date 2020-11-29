@@ -31,12 +31,7 @@ builder_string = """
 <NavigatorButton@MDIconButton>:
     pos_hint: {"x": 0, "y": 0}
     size_hint: (0.3, None)  
-    
-<Back@MDIconButton>:
-    pos_hint: {"x": 0.1, "y": 0.914}
-    icon: 'arrow-left'
-    size:(50,50)
-                  
+
 #potwierdz, cofnij
 <ClassicButton@MDFlatButton>:
     text: 'zwykly przycisk'

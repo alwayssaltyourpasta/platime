@@ -117,10 +117,10 @@ class TodayProgress(Screen):
 
         self.ids.analysis.add_widget(
             MDRoundFlatButton(
-                text="TOTAL\nTIME\nUTILIZED\n\n"+str(time),
+                text="TOTAL TIME UTILIZED: "+str(time),
                 text_color=get_color_from_hex('#e5e5e5'),
-                pos_hint={"x": .05, "y": 0},
-                size_hint=(0.27, 0.33),
+                pos_hint={"x": 0, "y": 0.30},
+                size_hint=(1, 0.1),
                 font_size=13
             )
         )
@@ -134,10 +134,10 @@ class TodayProgress(Screen):
         max_time = row[1]
         self.ids.analysis.add_widget(
             MDRoundFlatButton(
-                text="MOST\nTIME\nSPENT ON\n"+str(max_task) +"\n"+ str(max_time),
+                text="MOST TIME SPENT ON: "+str(max_task) +" - "+ str(max_time),
                 text_color=get_color_from_hex('#e5e5e5'),
-                pos_hint={"x": .35, "y": 0},
-                size_hint=(0.27, 0.33),
+                pos_hint={"x": 0, "y": 0.15},
+                size_hint=(1, 0.1),
                 font_size=13
             )
         )
@@ -151,10 +151,10 @@ class TodayProgress(Screen):
         min_time = row[1]
         self.ids.analysis.add_widget(
             MDRoundFlatButton(
-                text="LEAST\nTIME\nSPENT ON\n"+str(min_task) +"\n"+ str(min_time),
+                text="LEAST TIME SPENT ON: "+str(min_task) +" - "+ str(min_time),
                 text_color=get_color_from_hex('#e5e5e5'),
-                pos_hint={"x": .65, "y": 0},
-                size_hint=(0.27, 0.33),
+                pos_hint={"x": 0, "y": 0},
+                size_hint=(1, 0.1),
                 font_size=13
             )
         )

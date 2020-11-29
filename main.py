@@ -26,7 +26,7 @@ import screens_py.year_progress_screen
 
 
 #only for development
-#Window.size = (400,650)
+Window.size = (400,650)
 
 #connection to db
 try:
