@@ -131,7 +131,7 @@ class TodayScreen(Screen):
         for i in range(len(self.task_name)):
             self.ids.today_list.add_widget(
                 MDExpansionPanel(
-                    icon='logo.png',
+                    icon='graphics/bart.jpg',
                     content=ItemContent(),
                     panel_cls=MDExpansionPanelTwoLine(
                         text=f'{str(self.task_name[i])}',
