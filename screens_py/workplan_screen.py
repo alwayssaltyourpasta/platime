@@ -1,6 +1,6 @@
 import main
 from kivy.uix.screenmanager import Screen, ScreenManager
-from kivymd.uix.list import  TwoLineListItem
+from kivymd.uix.list import TwoLineListItem
 from kivy.utils import get_color_from_hex
 from kivymd.uix.label import MDLabel
 from kivymd.uix.dialog import MDDialog
@@ -13,13 +13,10 @@ class WorkPlanScreen(Screen):
     def show_datepicker(self):
         picker = MDDatePicker(callback=self.create_work_plan)
         picker.open()
-        # function which have to choose date add to tak in datebase
 
     def create_work_plan(self, the_date):
 
-        print(the_date)
         self.choose_date = str(the_date)
-        print(self.choose_date)
         mycursor = main.sqliteConnection.cursor()
         mycursor.execute(f"SELECT a.task_name, a.scheduled_time, b.id_task "
                          "FROM task_type a "
@@ -67,7 +64,6 @@ class WorkPlanScreen(Screen):
         row = mycursor.fetchone()
         try:
             all_time = int(row[0])
-            print(all_time)
 
             self.ids.time_label.add_widget(
                 MDLabel(
@@ -92,24 +88,22 @@ class WorkPlanScreen(Screen):
             )
 
     def create_dialog(self, task_id, nadmiar):
+
         self.task = int(task_id)
-        print(self.task)
         self.dialog = MDDialog(
             text="What do you wanna do?",
             size_hint=[0.9, 0.5],
             auto_dismiss=False,
             buttons=[MDFlatButton(text="Back, please", on_release=self.close_dialog),
                      MDFlatButton(text="Delete this task", on_release=self.delete_from_db),
-                     MDFlatButton(text="I've done yet", on_release=self.add_done_date)]
+                     MDFlatButton(text="I've done yet", on_release=self.add_done_date)
+            ]
         )
         self.dialog.open()
 
-
-            # back to today_screen without saving to database
     def close_dialog(self, inst):
         self.dialog.dismiss()
 
-            # delete from db function
     def delete_from_db(self, inst):
         print(self.task)
         mycursor = main.sqliteConnection.cursor()
@@ -122,9 +116,6 @@ class WorkPlanScreen(Screen):
         self.dialog.dismiss()
         self.show_datepicker()
 
-
-
-            # add done date to id task that makes task done and not show it on main screen
     def add_done_date(self, init):
         print(self.task)
         mycursor = main.sqliteConnection.cursor()
@@ -136,7 +127,6 @@ class WorkPlanScreen(Screen):
         self.ids.date_label.clear_widgets()
         self.dialog.dismiss()
         self.show_datepicker()
-        #tu zrobić wyświetlanie listy -> work plan z warunkiem ze scheduled-date rowna jest the date
 
 
 sm = ScreenManager()

@@ -21,7 +21,7 @@ class ItemContent(MDBoxLayout):
 
     def start(self):
         Clock.unschedule(self.increment_time)
-        Clock.schedule_interval(self.increment_time, 1)
+        Clock.schedule_interval(self.increment_time, 60)
 
     def stop(self):
         Clock.unschedule(self.increment_time)
@@ -34,7 +34,7 @@ class ItemContent(MDBoxLayout):
             buttons=[MDFlatButton(text="Yeah!", on_release=self.save_time),
                      MDFlatButton(text="Just reset the time", on_release=self.reset_time),
                      MDFlatButton(text="Not really", on_release=self.close_dialog)
-                     ]
+            ]
         )
         self.dialog.open()
 
@@ -48,9 +48,9 @@ class ItemContent(MDBoxLayout):
             text="Are you sure, you wanna delete this task?",
             size_hint=[0.8, 0.5],
             auto_dismiss=False,
-            buttons=[MDFlatButton(text="Yeah!", on_release=self.delete_from_db),
+            buttons=[MDFlatButton(text="Yeah!", on_release=self.delete_from_database),
                      MDFlatButton(text="Not really", on_release=self.close_dialog)
-                     ]
+            ]
         )
         self.dialog.open()
 
@@ -62,15 +62,13 @@ class ItemContent(MDBoxLayout):
             auto_dismiss=False,
             buttons=[MDFlatButton(text="Yeah!", on_release=self.add_done_date),
                      MDFlatButton(text="Not really", on_release=self.close_dialog)
-                     ]
+            ]
         )
         self.dialog.open()
 
-#back to today_screen without saving to database
     def close_dialog(self, inst):
         self.dialog.dismiss()
 
-    #save to db, task done -> done date = no in today screen
     def save_time(self, inst):
 
         task_time = self.minutes
@@ -83,19 +81,16 @@ class ItemContent(MDBoxLayout):
         self.minutes = 0
         self.dialog.dismiss()
 
-    #delete task from work plan
-    def delete_from_db(self, inst):
+    def delete_from_database(self, inst):
 
         task_id_to_delete = int(task.zmienna)
 
         mycursor = main.sqliteConnection.cursor()
-        mycursor.execute(f"DELETE FROM work_plan WHERE id_task=?",(task_id_to_delete,))
+        mycursor.execute(f"DELETE FROM work_plan WHERE id_task=?", (task_id_to_delete,))
         main.sqliteConnection.commit()
 
-        #TodayScreen().today()
         self.dialog.dismiss()
 
-    #done date to task
     def add_done_date(self, init):
 
         done_task_id = int(task.zmienna)
@@ -116,53 +111,55 @@ class TodayScreen(Screen):
                          "FROM task_type a "
                          "JOIN work_plan b "
                          "ON a.id_type=b.id_type "
-                         "WHERE b.scheduled_date = date('now') AND b.done_date IS NULL")
+                         "WHERE b.scheduled_date = date('now') "
+                         "          AND b.done_date IS NULL")
         rows = mycursor.fetchall()
 
-        self.task_id = []
-        self.task_name = []
-        self.task_time = []
+        task_id = []
+        task_name = []
+        task_time = []
 
         for i in range(len(rows)):
-            self.task_id.append(rows[i][0])
-            self.task_name.append(rows[i][1])
-            self.task_time.append(rows[i][2])
+            task_id.append(rows[i][0])
+            task_name.append(rows[i][1])
+            task_time.append(rows[i][2])
 
-        for i in range(len(self.task_name)):
+        for i in range(len(task_name)):
             self.ids.today_list.add_widget(
                 MDExpansionPanel(
                     icon='graphics/bart.jpg',
                     content=ItemContent(),
                     panel_cls=MDExpansionPanelTwoLine(
-                        text=f'{str(self.task_name[i])}',
-                        secondary_text=f'{str(self.task_time[i])} minutes',
-                        on_press = partial(task, self.task_id[i],)
-                )))
+                        text=f'{str(task_name[i])}',
+                        secondary_text=f'{str(task_time[i])} minutes',
+                        on_press=partial(task, task_id[i],)
+                    )
+                )
+            )
 
         mycursor.execute(f"SELECT sum(a.scheduled_time) "
                          f"FROM task_type a "
                          f"JOIN work_plan b "
                          f"ON a.id_type=b.id_type "
-                         f"WHERE b.scheduled_date = date('now') AND b.done_date IS NULL")
+                         f"WHERE b.scheduled_date = date('now') "
+                         f"         AND b.done_date IS NULL")
         row = mycursor.fetchone()
 
         try:
-            time_on_this_date = int(row[0])
+            time = str(int(row[0]))
 
             self.ids.time.add_widget(
                 MDLabel(
-                    text = f"W O R K  T I M E: {str(time_on_this_date)} minutes",
-                    halign= 'center',
-                    pos_hint= {"center_x": 0.5, "center_y": 0.8},
-                    theme_text_color= 'Custom',
-                    text_color= get_color_from_hex('#3CB371'),
-                    font_style= 'Caption',
-                    font_size= 10
+                    text=f"W O R K  T I M E: {time} minutes",
+                    halign='center',
+                    pos_hint={"center_x": 0.5, "center_y": 0.8},
+                    theme_text_color='Custom',
+                    text_color=get_color_from_hex('#3CB371'),
+                    font_style='Caption',
+                    font_size=10
                 )
             )
-
         except:
-
             self.ids.time.add_widget(
                 MDLabel(
                     text="F R E E  T I M E! \nP L A N  Y O U R  D A Y",

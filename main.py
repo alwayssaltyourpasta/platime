@@ -28,13 +28,14 @@ import screens_py.year_progress_screen
 #only for development
 Window.size = (400,650)
 
-#connection to db
+
 try:
     sqliteConnection = sqlite3.connect('platime.db')
     print("Successfully Connected to SQLite")
 
 except sqlite3.Error as error:
-    print("Error while connecting to sqlite", error)
+    print("Error while connecting to sqlite: ", error)
+
 
 class Start(Screen):
     def skip(self, dt):
@@ -43,11 +44,10 @@ class Start(Screen):
     def on_enter(self, *args):
         Clock.schedule_once(self.skip, 0)
 
-#analysis function
+
 def summary(self, number_of_days, main_list):
     dt = datetime.today()
     days = dt.date()-timedelta(days=number_of_days)
-
 
     mycursor = sqliteConnection.cursor()
     mycursor.execute(f"SELECT count(id_task) "
@@ -56,21 +56,22 @@ def summary(self, number_of_days, main_list):
     row = mycursor.fetchone()
     done_tasks = row[0]
 
-
-    main_list.add_widget(
-        MDRoundFlatButton(
-            text=str(done_tasks) + "\n\nD O N E\nT A S K S",
-            text_color=get_color_from_hex('#e5e5e5'),
-            pos_hint={"x": .05, "y": .0},
-            size_hint=(0.27, 0.35),
-            font_size=15
-            )
-        )
     mycursor.execute(f"SELECT count(id_task) "
                          f"FROM work_plan "
                          f"WHERE scheduled_date > ? AND scheduled_date <= date('now') ", (days,))
     row = mycursor.fetchone()
     all_scheduled_tasks = row[0]
+
+    mycursor.execute("SELECT SUM(execution_time) "
+                     "FROM work_plan "
+                     "WHERE done_date <= DATE('now') AND done_date > ? ", (days,))
+    rows = mycursor.fetchone()
+    time = rows[0]
+
+    if time == None:
+        time = "0"
+    else:
+        time = time
 
     if all_scheduled_tasks == 0:
         precent = '0'
@@ -79,23 +80,24 @@ def summary(self, number_of_days, main_list):
 
     main_list.add_widget(
         MDRoundFlatButton(
+            text=str(done_tasks) + "\n\nD O N E\nT A S K S",
+            text_color=get_color_from_hex('#e5e5e5'),
+            pos_hint={"x": .05, "y": .0},
+            size_hint=(0.27, 0.35),
+            font_size=15
+        )
+    )
+    main_list.add_widget(
+        MDRoundFlatButton(
             text=str(precent) + "%\n\nD O N E\nT A S K S",
             text_color=get_color_from_hex('#e5e5e5'),
             md_bg_color=get_color_from_hex('#333333'),
             pos_hint={"x": .365, "y": 0},
             size_hint=(0.27, 0.35),
             font_size=15
-            )
         )
-    mycursor.execute("SELECT SUM(execution_time) "
-                        "FROM work_plan "
-                        "WHERE done_date <= DATE('now') AND done_date > ? ", (days,))
-    rows = mycursor.fetchone()
-    time = rows[0]
-    if time == None:
-        time = "0"
-    else:
-        time = time
+    )
+
     main_list.add_widget(
         MDRoundFlatButton(
             text=str(time) + "\nminutes\n\nW O R K\nT I M E",
@@ -103,8 +105,8 @@ def summary(self, number_of_days, main_list):
             pos_hint={"x": .68, "y": 0},
             size_hint=(0.27, 0.35),
             font_size=15
-            )
         )
+    )
 
 def analysis(self, number_of_days, scroll_list):
     dt = datetime.today()

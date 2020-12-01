@@ -1,6 +1,6 @@
 import main
 from kivy.uix.screenmanager import Screen, ScreenManager
-from kivymd.uix.list import TwoLineListItem, TwoLineAvatarIconListItem
+from kivymd.uix.list import TwoLineAvatarIconListItem
 from functools import partial
 
 
@@ -33,18 +33,15 @@ class AddTaskScreen(Screen):
                     theme_text_color='Custom',
                     text_color=main.get_color_from_hex('#e5e5e5'),
                     font_style='Body1',
-                    #ten press umożliwi sprawdzenie ile czasu średnio potrzebne na zadanie wysunie się okno pod spodem
                     on_press=partial(self.choosen_task, task_id[i],)
-                    )
                 )
+            )
 
-    #this function call calendar
     def choosen_task(self, task_from_list, nadmiarowa_zmienna):
         self.task_n = int(task_from_list)
         picker = main.MDDatePicker(callback=self.save_to_database)
         picker.open()
 
-    #this function is database saver
     def save_to_database(self, the_date):
         task_date = str(the_date)
         task_id = self.task_n

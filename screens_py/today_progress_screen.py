@@ -1,10 +1,9 @@
 import main
 from kivy.uix.screenmanager import Screen, ScreenManager
-from kivymd.uix.progressbar import MDProgressBar
 from kivy.utils import get_color_from_hex
 from kivymd.uix.button import MDRoundFlatButton
 from kivymd.uix.list import ThreeLineListItem
-from kivymd.uix.label import MDLabel
+
 
 class TodayProgress(Screen):
 
@@ -15,7 +14,6 @@ class TodayProgress(Screen):
                          "WHERE scheduled_date = date('now') AND done_date IS NULL ")
         rows = mycursor.fetchone()
         count_of_types = str(rows[0])
-        print(count_of_types)
 
         self.ids.today_stats.add_widget(
             MDRoundFlatButton(
@@ -114,6 +112,23 @@ class TodayProgress(Screen):
         rows = mycursor.fetchone()
         time = rows[0]
 
+        mycursor.execute("SELECT a.task_name, max(b.execution_time) "
+                         "FROM task_type a "
+                         "JOIN work_plan b "
+                         "ON a.id_type=b.id_type "
+                         "WHERE done_date = date('now') ")
+        row = mycursor.fetchone()
+        max_task = row[0]
+        max_time = row[1]
+
+        mycursor.execute("SELECT a.task_name, min(b.execution_time) "
+                         "FROM task_type a "
+                         "JOIN work_plan b "
+                         "ON a.id_type=b.id_type "
+                         "WHERE done_date = date('now') ")
+        row = mycursor.fetchone()
+        min_task = row[0]
+        min_time = row[1]
 
         self.ids.analysis.add_widget(
             MDRoundFlatButton(
@@ -124,14 +139,6 @@ class TodayProgress(Screen):
                 font_size=13
             )
         )
-        mycursor.execute("SELECT a.task_name, max(b.execution_time) "
-                         "FROM task_type a "
-                         "JOIN work_plan b "
-                         "ON a.id_type=b.id_type "
-                         "WHERE done_date = date('now') ")
-        row = mycursor.fetchone()
-        max_task = row[0]
-        max_time = row[1]
         self.ids.analysis.add_widget(
             MDRoundFlatButton(
                 text="MOST TIME SPENT ON: "+str(max_task) +" - "+ str(max_time),
@@ -141,14 +148,6 @@ class TodayProgress(Screen):
                 font_size=13
             )
         )
-        mycursor.execute("SELECT a.task_name, min(b.execution_time) "
-                         "FROM task_type a "
-                         "JOIN work_plan b "
-                         "ON a.id_type=b.id_type "
-                         "WHERE done_date = date('now') ")
-        row = mycursor.fetchone()
-        min_task = row[0]
-        min_time = row[1]
         self.ids.analysis.add_widget(
             MDRoundFlatButton(
                 text="LEAST TIME SPENT ON: "+str(min_task) +" - "+ str(min_time),
@@ -158,5 +157,7 @@ class TodayProgress(Screen):
                 font_size=13
             )
         )
+
+
 sm = ScreenManager()
 sm.add_widget(TodayProgress(name="today_progress"))

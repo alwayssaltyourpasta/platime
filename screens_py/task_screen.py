@@ -5,7 +5,6 @@ from kivy.utils import get_color_from_hex
 from functools import partial
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.button import MDFlatButton
-from kivymd.uix.label import MDLabel
 
 
 class TaskScreen(Screen):
@@ -17,7 +16,6 @@ class TaskScreen(Screen):
         task_id = []
         task_name = []
         task_time = []
-        print(rows)
 
         for i in range(len(rows)):
             task_id.append(rows[i][0])
@@ -32,28 +30,24 @@ class TaskScreen(Screen):
                     theme_text_color='Custom',
                     text_color=get_color_from_hex('#e5e5e5'),
                     font_style='Subtitle1',
-                    on_press=partial(self.create_dialog, task_id[i],))
-                )
+                    on_press=partial(self.delete_dialog, task_id[i],))
+            )
 
-    def create_dialog(self, task_id, nadmiar):
+    def delete_dialog(self, task_id, nadmiar):
+
         self.task = task_id
-        print(self.task)
         self.dialog = MDDialog(
-
             text="Are you sure, you wanna delete this task?",
             size_hint=[0.8, 0.5],
             auto_dismiss=False,
             buttons=[MDFlatButton(text="Yeah!", on_release=self.delete_from_db),
                      MDFlatButton(text="Not really", on_release=self.close_dialog)
-                     ]
+            ]
         )
         self.dialog.open()
-        # back to today_screen without saving to database
 
     def close_dialog(self, inst):
         self.dialog.dismiss()
-
-        # delete from db function
 
     def delete_from_db(self, inst):
 
